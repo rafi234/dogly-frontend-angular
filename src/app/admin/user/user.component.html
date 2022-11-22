@@ -1,0 +1,46 @@
+<table class="table align-middle mb-0 bg-light">
+  <thead class="bg-primary text-light">
+  <tr>
+    <th>User</th>
+    <th>Status</th>
+    <th>Address</th>
+    <th>Dogs</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users">
+    <td>
+      <div class="d-flex align-items-center">
+        <img
+          src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+          alt=""
+          style="width: 45px; height: 45px; margin-inline: 1em"
+          class="rounded-circle"
+        />
+        <div class="ms-3">
+          <p class="fw-bold mb-1">{{user.name}} {{user.surname}}</p>
+          <p class="text-muted mb-0">{{user.email}}</p>
+        </div>
+      </div>
+    </td>
+    <td>
+      <span *ngIf="user.active == true" class="badge rounded-pill bg-success">Online</span>
+      <span *ngIf="user.active == false" class="badge rounded-pill bg-danger">Offline</span>
+    </td>
+    <td>
+      {{user.address.country}}, {{user.address.city}}<br>{{user.address.street}}, {{user.address.postalCode}}
+    </td>
+    <td>
+      <button type="button" class="btn btn-secondary" data-mdb-toggle="modal" data-mdb-target="#dogList" (click)="openModalDogs(user.dogs)">
+        Dogs
+      </button>
+    </td>
+    <td>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="openModalEditUser(user)">
+        Edit
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
