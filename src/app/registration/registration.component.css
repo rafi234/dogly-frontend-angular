@@ -1,4 +1,12 @@
+input.ng-invalid.ng-touched {
+  border: 1px solid #dc4c64;
+  border-left: 4px solid #dc4c64;
+}
 
-/*form {*/
-/*  padding-right: 20em;*/
-/*}*/
+i {
+  font-size: smaller;
+}
+
+p {
+  margin-bottom: 0.2rem;
+}

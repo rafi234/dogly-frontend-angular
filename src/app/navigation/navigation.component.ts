@@ -16,4 +16,8 @@ export class NavigationComponent implements OnInit {
   goToRegistration() {
     this.router.navigate(['register'])
   }
+
+  goToLogin() {
+    this.router.navigate(['login'])
+  }
 }

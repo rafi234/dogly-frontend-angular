@@ -1,63 +1,119 @@
-<div class="container">
+<div class="container m-4">
+  <h1>Register to dogly</h1>
   <div class="row"> <!--TODO justify-content-center do it responsible-->
-    <form class="col-md-6 mt-3">
-      <!-- 2 column grid layout with text inputs for the first and last names -->
+    <form class="col-md-6 mt-3" #registrationForm="ngForm">
+
       <div class="form-group">
-        <label class="form-label" for="name">First name</label>
-        <input type="text" id="name" class="form-control"/>
+        <label for="name">First name</label>
+        <input type="text" id="name" class="form-control"
+               [(ngModel)]="user.name" name="name" placeholder="name" value="" required #nameField = "ngModel"/>
+        <div *ngIf="nameField.invalid && nameField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Name cannot be blank!
+        </div>
       </div>
 
       <div class="form-group">
         <label class="form-label" for="lastName">Last name</label>
-        <input type="text" id="lastName" class="form-control"/>
+        <input type="text" id="lastName" class="form-control" placeholder="last name"
+               [(ngModel)]="user.surname" name="surname" #surnameField="ngModel" required/>
+        <div *ngIf="surnameField.invalid && surnameField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Last name cannot be blank!
+        </div>
       </div>
 
       <!-- Email input -->
       <div class="form-group mb-1">
         <label class="form-label" for="email">Email address</label>
-        <input type="email" id="email" class="form-control"/>
+        <input type="email" id="email" class="form-control" placeholder="Email"
+               [(ngModel)]="user.email" name="email" email="true" required #emailField="ngModel"/>
+        <div *ngIf="emailField.invalid && emailField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Email: <br> - cannot be blank,<br> - should contain @, <br> - have domain name.
+        </div>
       </div>
 
       <!--Password-->
       <div class="form-group mb-1">
         <label class="form-label" for="password">Password</label>
-        <input type="password" id="password" class="form-control"/>
+        <input type="password" id="password" class="form-control" placeholder="password"
+               [(ngModel)]="password" name="password" required #passwordField="ngModel"/>
+        <div *ngIf="passwordField.touched && passwordValidation()" class="alert alert-danger p-2">
+          Password must contain:
+          <p *ngIf="passwordHasProperLength === false" >
+            <i class="fas fa-times-circle"></i> at least 8 characters
+          </p>
+          <p *ngIf="passwordContainNumber === false">
+            <i class="fas fa-times-circle"></i> at least one number
+          </p>
+          <p *ngIf="passwordContainLowerCase === false">
+            <i class="fas fa-times-circle"></i> at least one lower case character
+          </p>
+          <p *ngIf="passwordContainUpperCase === false">
+            <i class="fas fa-times-circle"></i> at least one upper case character
+          </p>
+        </div>
       </div>
 
       <div class="form-group mb-1">
         <label class="form-label" for="repeatedPassword">Repeat Password</label>
-        <input type="password" id="repeatedPassword" class="form-control"/>
+        <input type="password" id="repeatedPassword" class="form-control" placeholder="password"
+               [(ngModel)]="repeatedPassword" name="repeatedPassword" #repeatedPasswordField="ngModel" required/>
+        <div *ngIf="isRepeatedPasswordValid()" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Passwords do not match!
+        </div>
+        <div *ngIf="repeatedPasswordField.invalid && repeatedPasswordField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> This field cannot be blank!
+        </div>
       </div>
 
       <!-- Address input -->
       <div class="form-group mb-1">
         <label class="form-label" for="country">Country</label>
-        <input type="text" id="country" class="form-control"/>
+        <input type="text" id="country" class="form-control" placeholder="country"
+               [(ngModel)]="user.address.country" name="country" #countryField="ngModel" required/>
+        <div *ngIf="countryField.invalid && countryField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Country cannot be blank!
+        </div>
       </div>
 
       <div class="form-group mb-1">
         <label class="form-label" for="city">City</label>
-        <input type="text" id="city" class="form-control"/>
+        <input type="text" id="city" class="form-control" placeholder="city"
+               [(ngModel)]="user.address.city" name="city" #cityField="ngModel" required/>
+        <div *ngIf="cityField.invalid && cityField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> City cannot be blank!
+        </div>
       </div>
 
       <div class="form-group mb-1">
         <label class="form-label" for="street">Street</label>
-        <input type="text" id="street" class="form-control"/>
+        <input type="text" id="street" class="form-control" placeholder="street"
+               [(ngModel)]="user.address.street" name="street" #streetField="ngModel" required/>
+        <div *ngIf="streetField.invalid && streetField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Street cannot be blank!
+        </div>
       </div>
 
       <div class="form-group mb-1">
         <label class="form-label" for="postalCode">Postal Code</label>
-        <input type="text" id="postalCode" class="form-control"/>
+        <input type="text" id="postalCode" class="form-control" placeholder="postal code"
+               [(ngModel)]="user.address.postalCode" name="postalCode" #codeField="ngModel" required/>
+        <div *ngIf="codeField.invalid && codeField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Postal code cannot be blank!
+        </div>
       </div>
 
       <div class="form-group mb-5">
         <label class="form-label" for="voivodeship">Voivodeship</label>
-        <input type="text" id="voivodeship" class="form-control"/>
+        <input type="text" id="voivodeship" class="form-control" placeholder="voivodeship"
+               [(ngModel)]="user.address.voivodeship" name="voivodeship" #voivodeshipField="ngModel" required/>
+        <div *ngIf="voivodeshipField.invalid && voivodeshipField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> Voivodeship cannot be blank!
+        </div>
       </div>
 
       <!-- Submit button -->
-      <button type="submit" class="btn btn-primary btn-block mb-4" (click)="signUp()">Sign up</button>
-
+      <div *ngIf="registrationForm.invalid" class="alert alert-warning">Form is invalid. Please complete the data.</div>
+      <button type="submit" class="btn btn-primary btn-block mb-4" (click)="signUp()" [disabled]="registrationForm.invalid">Sign up</button>
     </form>
   </div>
 </div>

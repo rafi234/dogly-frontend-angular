@@ -34,16 +34,17 @@ export class UserComponent implements OnInit {
     const modalRef = this.modalService.open(EditUserComponent)
     modalRef.componentInstance.user = user
     modalRef.result.then(result => {
-      if (result) {
-        const action = result[1]
-        if (action === 'UPDATE')
-          this.userService.updateUser(result[0]).subscribe()
-        else if (action === 'DELETE') {
-          if (confirm('Are you sure you want to delete user with email: ' + user.email)) {
-            this.userService.deleteUser(result[0]).subscribe()
+        if (result) {
+          const action = result[1]
+          if (action === 'UPDATE')
+            this.userService.updateUser(result[0]).subscribe()
+          else if (action === 'DELETE') {
+            if (confirm('Are you sure you want to delete user with email: ' + user.email)) {
+              this.userService.deleteUser(result[0]).subscribe()
+            }
           }
         }
       }
-    })
+    )
   }
 }

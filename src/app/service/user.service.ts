@@ -25,25 +25,39 @@ export class UserService {
   }
 
   updateUser(user : User): Observable<User> {
-    const updatedUser = {
-      'name' : user.name,
-      'surname' : user.surname,
-      'email' : user.email,
-      'street' : user.address.street,
-      'city' : user.address.city,
-      'country' : user.address.country,
-      'postalCode' : user.address.postalCode,
-      'voivodeship' :user.address.voivodeship
+    if (user.address) {
+      const updatedUser = {
+        'name': user.name,
+        'surname': user.surname,
+        'email': user.email,
+        'street': user.address.street,
+        'city': user.address.city,
+        'country': user.address.country,
+        'postal_code': user.address.postalCode,
+        'voivodeship': user.address.voivodeship
+      }
+      return this.httpClient.put<User>(environment.restUrl + '/api/user/update', updatedUser, {withCredentials: false})
     }
-    return this.httpClient.put<User>(environment.restUrl + '/api/user/update', updatedUser, {withCredentials: false})
+    throw new Error()
   }
 
   deleteUser(user : User): Observable<any>{
     return this.httpClient.delete(environment.restUrl + '/api/user/' + user.email)
   }
 
-  addUser(user : User): Observable<User>{
-    return this.httpClient.post<User>(environment.restUrl + "/api/auth/signup", user)
+  addUser(user : User, password : string): Observable<User>{
+    const newUser = {
+      'name': user.name,
+      'surname': user.surname,
+      'email': user.email,
+      'password': password,
+      'street': user.address.street,
+      'city': user.address.city,
+      'country': user.address.country,
+      'postalCode': user.address.postalCode,
+      'voivodeship': user.address.voivodeship
+    }
+    return this.httpClient.post<User>(environment.restUrl + "/api/auth/signup", newUser)
   }
 }
 

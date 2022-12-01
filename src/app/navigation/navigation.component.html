@@ -55,13 +55,13 @@
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerink="#">Meetings</a>
+          <a class="nav-link" routerLink="meetings">Meetings</a>
         </li>
       </ul>
       <!-- Left links -->
 
       <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-link px-3 me-2">
+        <button type="button" class="btn btn-link px-3 me-2" (click)="goToLogin()">
           Login
         </button>
         <button type="button" class="btn btn-primary me-3" (click)="goToRegistration()">

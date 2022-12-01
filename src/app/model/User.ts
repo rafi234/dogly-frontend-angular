@@ -29,12 +29,11 @@ export class User {
     for (const role of data.roles) {
       roles.push(role)
     }
-    const newUser = new User(
+    return new User(
       data.id, data.name, data.surname,
       data.email, newAddress, dogs,
       roles, data.active
     )
-    return newUser
   }
 }
 
@@ -62,7 +61,7 @@ export class Address {
     )
   }
 
-  toString() : string {
+  toString(): string {
     return `Country: ${this.country}\nCity: ${this.city}\nVoivodeship: ${this.voivodeship}\nStreet: ${this.street}, ${this.postalCode}`
   }
 
