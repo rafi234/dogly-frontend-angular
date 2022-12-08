@@ -54,7 +54,7 @@ export class UserService {
       'street': user.address.street,
       'city': user.address.city,
       'country': user.address.country,
-      'postalCode': user.address.postalCode,
+      'postal_code': user.address.postalCode,
       'voivodeship': user.address.voivodeship
     }
     return this.httpClient.post<User>(environment.restUrl + "/api/auth/signup", newUser)

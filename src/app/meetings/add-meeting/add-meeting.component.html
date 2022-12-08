@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="staticBackdropLabel">Create new meeting</h5>
+  <button type="button" class="btn-close" data-mdb-dismiss="modal" (click)="close() " aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="col">
+      <!-- Title input -->
+      <div class="form-check">
+        <p>Title</p>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="meeting.title"
+          name="title"
+        />
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="col">
+      <!-- Date input -->
+      <div class="form-check">
+        <p>Date</p>
+        <input
+          type="datetime-local"
+          class="form-control"
+          [(ngModel)]="meeting.date"
+          name="date"
+        />
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="col text-center">
+      <!-- Place input -->
+      <div class="form-check">
+        <p class="text-start">Place</p>
+<!--        <p>{{ selected?.url }}</p>-->
+        <select class="form-select" [(ngModel)]="selected" name="place">
+          <option *ngIf="!isDogParkLoaded()" selected disabled>
+              Loading...
+          </option>
+          <option *ngFor="let dogPark of dogParks" value="{{ dogPark.id }}">
+            {{ dogPark.toString() }}
+          </option>
+        </select>
+        <a *ngIf="selected" class="text-end" href="" target="_blank">more info about this place</a>
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- Description input -->
+    <div class="form-check mb-4">
+      <label class="form-label" for="description">Short description about meeting</label>
+      <textarea
+        class="form-control"
+        id="description"
+        rows="4"
+        [(ngModel)]="meeting.description"
+        name="description">
+    </textarea>
+    </div>
+
+
+    <hr/>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal" (click)="close()">Close</button>
+      <button type="button" class="btn btn-primary" (click)="confirm()">Confirm</button>
+    </div>
+  </form>
+</div>

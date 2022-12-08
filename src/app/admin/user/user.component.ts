@@ -18,8 +18,7 @@ export class UserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private modalService: NgbModal
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(next => this.users = next);

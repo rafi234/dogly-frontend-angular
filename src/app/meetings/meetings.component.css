@@ -1,0 +1,17 @@
+
+img {
+  height: 14.7rem;
+  border-radius: 0.4rem 0 0 0.4rem;
+}
+
+#description {
+  height: 4.8rem;
+}
+
+@media only screen and (max-width: 767px) {
+
+  img {
+    border-radius: 0.4rem 0.4rem 0 0;
+    width: 100%;
+  }
+}

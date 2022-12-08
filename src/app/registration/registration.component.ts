@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {UserService} from "../service/user.service";
 import {Address, Role, User} from "../model/User";
 import {Dog} from "../model/Dog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -23,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   passwordContainNumber = false
   passwordHasProperLength = false
 
-  constructor(private userService : UserService) {
+  constructor(private userService : UserService, private router: Router) {
     this.user = new User('', '', '', '',
     new Address('', '', '', '', '', ''),
     new Array<Dog>(), new Array<Role>(), false)
@@ -52,5 +53,6 @@ export class RegistrationComponent implements OnInit {
 
   signUp() {
     this.userService.addUser(this.user, this.password).subscribe()
+    this.router.navigate(['/'])
   }
 }

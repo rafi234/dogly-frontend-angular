@@ -14,6 +14,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditUserComponent } from './admin/user/edit-user/edit-user.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { MeetingsComponent } from './meetings/meetings.component';
+import { AddMeetingComponent } from './meetings/add-meeting/add-meeting.component';
+import { WalksComponent } from './walks/walks.component';
 
 const routes: Routes = [
   // {path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService]},
@@ -35,7 +37,9 @@ const routes: Routes = [
     PageNotFoundComponent,
     EditUserComponent,
     RegistrationComponent,
-    MeetingsComponent
+    MeetingsComponent,
+    AddMeetingComponent,
+    WalksComponent
   ],
   imports: [
     BrowserModule,

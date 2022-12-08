@@ -1,0 +1,42 @@
+<div class="text-center text-md-end m-3">
+  <button class="btn btn-primary px-4" (click)="openAddMeeting()">Add meeting</button>
+</div>
+
+<div class="container">
+  <div class="row col-12 g-3 justify-content-center">
+    <div class="card mb-3 mx-3" style="max-width: 900px; min-height: 15em" *ngFor="let meeting of meetings">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img
+            src="{{ meeting.dogPark?.imgUrl }}"
+            alt="Park Picture"
+            class="img-fluid"
+          />
+        </div>
+        <div class="col-md-8 bg-light ">
+          <div class="card-body">
+            <h5 class="card-title">{{ meeting.title }}</h5>
+            <p class="card-text" id="description">
+              {{ meeting.description }}
+            </p>
+            <p class="card-text">
+              Place: {{ meeting.dogPark?.location }} in {{ meeting.dogPark?.city }}
+              <a class="text-warning text-decoration-underline" target="_blank"
+                 href="{{ meeting.dogPark?.url }}"><small>more</small></a>
+            </p>
+            <div class="card-footer text-start m-0 p-0 d-flex">
+              <p><small class="text-muted ">Added at {{ meeting.addedAt | date:'medium' }}
+                by {{ meeting.user?.name }} {{ meeting.user?.surname }}</small></p>
+              <div class="container">
+                <button class="btn btn-primary m-1" (click)="onGoingClick(meeting.id)">
+                  Going {{ meeting.going }}</button>
+                <button class="btn btn-primary m-1" (click)="onInterestedClick(meeting.id)">
+                  Interested {{ meeting.interested }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
