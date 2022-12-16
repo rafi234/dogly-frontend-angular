@@ -16,12 +16,14 @@ import { RegistrationComponent } from './registration/registration.component';
 import { MeetingsComponent } from './meetings/meetings.component';
 import { AddMeetingComponent } from './meetings/add-meeting/add-meeting.component';
 import { WalksComponent } from './walks/walks.component';
+import { WalksAddComponent } from './walks/walks-add/walks-add.component';
 
 const routes: Routes = [
   // {path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService]},
   {path: 'admin/user', component: UserComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'walks', component:WalksComponent},
   {path: 'meetings', component: MeetingsComponent},
   {path: '404', component: PageNotFoundComponent},
   {path: '**', redirectTo: '404'}
@@ -39,7 +41,8 @@ const routes: Routes = [
     RegistrationComponent,
     MeetingsComponent,
     AddMeetingComponent,
-    WalksComponent
+    WalksComponent,
+    WalksAddComponent
   ],
   imports: [
     BrowserModule,

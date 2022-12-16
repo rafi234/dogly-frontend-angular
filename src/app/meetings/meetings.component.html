@@ -4,13 +4,13 @@
 
 <div class="container">
   <div class="row col-12 g-3 justify-content-center">
-    <div class="card mb-3 mx-3" style="max-width: 900px; min-height: 15em" *ngFor="let meeting of meetings">
+    <div class="card p-0 mb-3 mx-3" style="max-width: 900px; min-height: 15em" *ngFor="let meeting of meetings">
       <div class="row g-0">
         <div class="col-md-4">
           <img
             src="{{ meeting.dogPark?.imgUrl }}"
             alt="Park Picture"
-            class="img-fluid"
+            class="img-fluid align-items-center"
           />
         </div>
         <div class="col-md-8 bg-light ">

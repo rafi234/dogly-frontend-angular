@@ -1,1 +1,26 @@
-<p>walks works!</p>
+<div class="container">
+  <div class="container">
+    <button class="btn btn-primary mt-3 text-end" (click)="openAddWalksComponent()">Add Advertisement</button>
+  </div>
+  <div class="row">
+
+    <div class="card mt-3 col-xxl-3 col-lg-4 col-sm-6 col-12" *ngFor="let i of loop">
+      <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+        <img src="https://mdbootstrap.com/img/new/standard/nature/111.webp" class="img-fluid"/>
+        <a href="#!">
+          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+        </a>
+      </div>
+
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the bulk of the
+          card's content.
+        </p>
+
+      </div>
+      <div class="card-footer">2 days ago</div>
+    </div>
+  </div>
+</div>

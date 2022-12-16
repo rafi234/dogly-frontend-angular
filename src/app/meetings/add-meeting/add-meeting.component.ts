@@ -12,7 +12,7 @@ import {MeetingsService} from "../../service/meetings.service";
 export class AddMeetingComponent implements OnInit {
 
   @Input()
-  selected?: String
+  selected?: DogPark
   @Input()
   meeting: Meeting = new Meeting('', '', new Date(), new Date(), 0, 0, '', undefined, undefined)
   dogParks?: Array<DogPark>
@@ -45,10 +45,10 @@ export class AddMeetingComponent implements OnInit {
 
   confirm() {
     if(this.dogParks) {
-      this.meeting.dogPark = this.dogParks.find(dp => dp.id === this.selected)
+
     }
     // TODO: needs user who create it
-    // this.meetingsService.addMeeting(this.meeting)
+    // this.meetingsService.addMeeting(this.meeting).subscribe()
     this.close()
   }
 }

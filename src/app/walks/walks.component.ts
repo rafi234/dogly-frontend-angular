@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {WalksAddComponent} from "./walks-add/walks-add.component";
 
 @Component({
   selector: 'app-walks',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WalksComponent implements OnInit {
 
-  constructor() { }
+  loop = [0, 0, 0 , 0, 0, 0, 0, 0, 0]
+
+
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
+  }
+
+  openAddWalksComponent() {
+    this.modalService.open(WalksAddComponent)
   }
 
 }
