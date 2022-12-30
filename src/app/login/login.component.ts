@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../service/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../service/auth.service';
+import {NgForm} from "@angular/forms";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-login',
@@ -8,21 +10,33 @@ import { AuthService } from '../service/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  email = '';
-  password = '';
-  massage = '';
+  message? : string
+  whileLogging = false
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private userService:UserService
+  ) { }
 
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    if (this.authService.authenticate(this.email, this.password)) {
-      console.log(`${this.email} ${this.password}`)
-    } else {
-      this.massage = 'Your email or password was not recognised - try again.'
-    }
-  }
+  onSubmit(loginData: NgForm) {
+    this.whileLogging = true
+    this.userService.login(loginData).subscribe({
+        next: (response:any) => {
+          this.authService.setToken(response.token)
+          this.authService.setRoles(response.user.roles)
+          this.authService.setEmail(response.user.email)
+          this.message = undefined
+        },
+        error: () => {
+          this.message = 'Your email or password was not recognised - try again.'
+          this.whileLogging = false
+        },
+        complete: () => this.whileLogging = false
+      }
+    )
 
+  }
 }

@@ -1,0 +1,9 @@
+
+img {
+  max-height: 250px;
+}
+
+#imageDiv {
+  display: flex;
+  flex-direction: column;
+}

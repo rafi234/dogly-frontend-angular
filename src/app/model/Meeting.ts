@@ -44,8 +44,8 @@ export class Meeting {
     return new Meeting(
       meeting.id,
       meeting.description,
-      this.getDateFromHttp(addedAt),
-      this.getDateFromHttp(date),
+      addedAt,
+      date,
       meeting.interested,
       meeting.going,
       meeting.title,
@@ -54,7 +54,14 @@ export class Meeting {
     )
   }
 
-  static getDateFromHttp(date: Array<number>): Date {
-    return new Date(date[0], date[1], date[2], date[3], date[4], date[5])
+  isMeetingValid() {
+    return this.dogPark != undefined &&
+      this.description !== '' &&
+      this.title !== ''
   }
+
+  // static getDateFromHttp(date: Array<number>): Date {
+  //   console.log(date)
+  //   return new Date(date[0], date[1], date[2], date[3], date[4], date[5])
+  // }
 }

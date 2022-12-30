@@ -10,3 +10,7 @@ i {
 p {
   margin-bottom: 0.2rem;
 }
+
+form {
+  padding-right: 3em;
+}

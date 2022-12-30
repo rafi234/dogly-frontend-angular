@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {DogPark} from "../model/DogPark";
 import {environment} from "../../environments/environment";
-import {map, Observable, of} from "rxjs";
+import {map, Observable} from "rxjs";
 import {Meeting} from "../model/Meeting";
 
 @Injectable({
@@ -19,7 +19,6 @@ export class MeetingsService {
         data => {
           const meetings = new Array<Meeting>()
           data.forEach(meeting => meetings.push(Meeting.fromHttp(meeting, meeting.date, meeting.addedAt)))
-          meetings.forEach(m => console.log(m.date))
           return meetings
         }
       )

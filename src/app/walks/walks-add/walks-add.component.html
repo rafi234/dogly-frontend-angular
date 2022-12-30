@@ -1,21 +1,9 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="staticBackdropLabel">Create new meeting</h5>
+  <h5 class="modal-title" id="staticBackdropLabel">Create new walk</h5>
   <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
 </div>
 <div class="modal-body">
-  <form>
-    <div class="col">
-      <!-- Title input -->
-      <div class="form-check">
-        <p>Title</p>
-        <input
-          type="text"
-          class="form-control"
-        />
-      </div>
-    </div>
-
-    <hr/>
+  <form #walkForm="ngForm" (ngSubmit)="addWalk(walkForm)">
 
     <div class="col">
       <!-- Date input -->
@@ -24,27 +12,62 @@
         <input
           type="datetime-local"
           class="form-control"
+          [(ngModel)]="walk.date"
+          name="date"
         />
       </div>
     </div>
 
     <hr/>
 
+    <div class="col">
+      <!-- Price input -->
+      <div class="form-check">
+        <p>Remuneration</p>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="walk.price"
+          name="price"
+        />
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- Dogs input -->
+    <div class="col">
+      <div class="form-check">
+        <p class="text-start">{{ checkedDogs.length == 0 ? 'Pick a dog:' : 'Pick dogs:' }}</p>
+        <div class="mx-4" *ngFor="let checkedDog of checkedDogs">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                 [(ngModel)]="checkedDog.checked"
+                 name="checked"/>
+          <label class="form-check-label" for="flexCheckDefault">
+            {{ checkedDog.dog.name }}, {{ checkedDog.dog.breed }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <hr/>
+
     <!-- Description input -->
     <div class="form-check mb-4">
-      <label class="form-label" for="description">Short description about meeting</label>
+      <label class="form-label" for="description">A few information about walk</label>
       <textarea
         class="form-control"
         id="description"
-        rows="4">
+        rows="4"
+        [(ngModel)]="walk.description"
+        name="description"
+      >
     </textarea>
     </div>
-
 
     <hr/>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal" (click)="closeModal()">Close</button>
-      <button type="button" class="btn btn-primary">Confirm</button>
+      <button type="submit" class="btn btn-primary">Confirm</button>
     </div>
   </form>
 </div>

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Dog} from 'src/app/model/Dog';
-import {Address, User} from "../../model/User";
+import {User} from "../../model/User";
 import {UserService} from "../../service/user.service";
 import {DogsComponent} from './dogs/dogs.component';
 import {EditUserComponent} from './edit-user/edit-user.component';
@@ -11,14 +11,20 @@ import {EditUserComponent} from './edit-user/edit-user.component';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
+@Injectable({
+    providedIn: 'root'
+  }
+)
 export class UserComponent implements OnInit {
 
   users: Array<User> = new Array<User>()
+  searchText = ''
 
   constructor(
     private userService: UserService,
     private modalService: NgbModal
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(next => this.users = next);
@@ -45,5 +51,13 @@ export class UserComponent implements OnInit {
         }
       }
     )
+  }
+
+  rolesToString(roles: string[]): string {
+    let str = ''
+    for (let i = 0; i < roles.length; ++i) {
+      str = str.concat(' ' + roles[i].substring(5))
+    }
+    return str
   }
 }

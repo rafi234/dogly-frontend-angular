@@ -3,6 +3,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AddMeetingComponent} from "./add-meeting/add-meeting.component";
 import {Meeting} from "../model/Meeting";
 import {MeetingsService} from "../service/meetings.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-meetings',
@@ -15,7 +16,8 @@ export class MeetingsComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private meetingService: MeetingsService
+    private meetingService: MeetingsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -24,6 +26,14 @@ export class MeetingsComponent implements OnInit {
 
   openAddMeeting() {
     const modalRef = this.modalService.open(AddMeetingComponent)
+    this.router.navigate(['meetings'], {queryParams : {'action': 'add'}})
+    modalRef.result.then(result => {
+      if (!result) {
+        return
+      }
+      if (result.isMeetingValid())
+        this.meetings.push(result)}
+    )
   }
 
   onGoingClick(id: string) {

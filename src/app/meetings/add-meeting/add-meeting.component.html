@@ -3,17 +3,22 @@
   <button type="button" class="btn-close" data-mdb-dismiss="modal" (click)="close() " aria-label="Close"></button>
 </div>
 <div class="modal-body">
-  <form>
+  <form #meetingsAddForm="ngForm">
     <div class="col">
       <!-- Title input -->
       <div class="form-check">
         <p>Title</p>
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="meeting.title"
-          name="title"
+        <input type="text" class="form-control" name="title"
+               [(ngModel)]="meeting.title"
+               #titleInput="ngModel"
+               required
         />
+      </div>
+      <div *ngIf="titleInput.invalid && titleInput.touched" class="alert alert-danger p-2">
+        Title can not be blank!
+      </div>
+      <div *ngIf="titleInput.touched && validateIfSentenceStartsProperly(meeting.title)" class="alert alert-danger p-2">
+        Title must starts with uppercase letter or a number!
       </div>
     </div>
 
@@ -23,12 +28,14 @@
       <!-- Date input -->
       <div class="form-check">
         <p>Date</p>
-        <input
-          type="datetime-local"
-          class="form-control"
-          [(ngModel)]="meeting.date"
-          name="date"
+        <input type="datetime-local" class="form-control" name="date"
+               [(ngModel)]="meeting.date"
+               #dateInput="ngModel"
+               required
         />
+        <div *ngIf="dateInput.touched && validateDate()" class="alert alert-danger p-2">
+          Invalid date!
+        </div>
       </div>
     </div>
 
@@ -38,15 +45,19 @@
       <!-- Place input -->
       <div class="form-check">
         <p class="text-start">Place</p>
-        <select class="form-select" [(ngModel)]="selected" name="place" >
+        <select class="form-select" [(ngModel)]="selected" name="place" #place="ngModel" required>
           <option *ngIf="!isDogParkLoaded()" selected disabled>
-              Loading...
+            Loading...
           </option>
           <option *ngFor="let dogPark of dogParks" [ngValue]="dogPark">
             {{ dogPark.toString() }}
           </option>
         </select>
-        <a *ngIf="selected" class="text-end mt-3" href="{{ selected.url }}" target="_blank">more info about this place</a>
+        <a *ngIf="selected" class="text-end mt-3" href="{{ selected.url }}" target="_blank">more info about this
+          place</a>
+        <div *ngIf="place.touched && place.invalid" class="alert alert-danger p-2">
+          You must select place
+        </div>
       </div>
     </div>
 
@@ -60,15 +71,23 @@
         id="description"
         rows="4"
         [(ngModel)]="meeting.description"
-        name="description">
+        name="description"
+        required
+        #descriptionInput="ngModel">
     </textarea>
+      <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="alert alert-danger p-2">
+        Description can not be blank
+      </div>
+      <div *ngIf="descriptionInput.touched && validateIfSentenceStartsProperly(meeting.description)" class="alert alert-danger p-2">
+        Description must starts with uppercase letter or a number!
+      </div>
     </div>
 
 
     <hr/>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal" (click)="close()">Close</button>
-      <button type="button" class="btn btn-primary" (click)="confirm()">Confirm</button>
+      <button type="button" class="btn btn-primary" [disabled]="meetingsAddForm.invalid" (click)="confirm()">Confirm</button>
     </div>
   </form>
 </div>

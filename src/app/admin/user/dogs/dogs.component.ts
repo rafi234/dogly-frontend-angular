@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Dog} from 'src/app/model/Dog';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dogs',
@@ -15,6 +15,7 @@ export class DogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.dogs)
   }
 
   close() {

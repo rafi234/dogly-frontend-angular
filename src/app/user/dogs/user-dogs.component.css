@@ -1,0 +1,11 @@
+img {
+  height: 15rem;
+  text-align: center;
+}
+
+.item.active {
+  text-align: center;
+}
+
+
+

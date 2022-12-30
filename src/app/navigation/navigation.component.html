@@ -31,7 +31,7 @@
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <!-- Dropdown -->
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" >
           <a
             class="nav-link dropdown-toggle"
             href="#"
@@ -54,20 +54,47 @@
             </li>
           </ul>
         </li>
+        <li class="nav-item dropdown" >
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdownMenuLinkToUser"
+          role="button"
+          data-mdb-toggle="dropdown"
+          aria-expanded="false"
+        >
+          User
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <button class="dropdown-item" (click)="openEditUserComponent()">Edit your data</button>
+          </li>
+          <li>
+            <a class="dropdown-item" routerLink="user/dogs">Dogs</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </li>
+        </ul>
+      </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="meetings">Meetings</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="walks">Walks</a>
         </li>
+
       </ul>
       <!-- Left links -->
 
       <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-link px-3 me-2" (click)="goToLogin()">
+        <button *ngIf="!isLoggedIn()" type="button" class="btn btn-link px-3 me-2" routerLink="/login">
           Login
         </button>
-        <button type="button" class="btn btn-primary me-3" (click)="goToRegistration()">
+        <button *ngIf="isLoggedIn()" type="button" class="btn btn-link px-3 me-2" (click)="logout()">
+          Logout
+        </button>
+        <button *ngIf="!isLoggedIn()" type="button" class="btn btn-primary me-3" routerLink="/register">
           Sign up for free
         </button>
         <a
