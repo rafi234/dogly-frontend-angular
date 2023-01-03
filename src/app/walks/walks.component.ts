@@ -18,7 +18,6 @@ export class WalksComponent implements OnInit {
 
   walks: Array<Walk> = new Array<Walk>()
 
-
   constructor(
     private modalService: NgbModal,
     private walkService: WalksService,
@@ -53,4 +52,22 @@ export class WalksComponent implements OnInit {
   connectedImagesToOneArray(dogs: Dog[]): FileHandle[] {
     return dogs.flatMap(dog => dog.images)
   }
+
+  getName(dog: Dog) {
+    return ' ' + dog.name
+  }
+
+  confirmWalk(walk: Walk, index: number) {
+    console.log(walk)
+    if (confirm(`Once you confirm, you are obligated to go for a walk with this dog/dogs, unless user ${walk.user?.name} ${walk.user?.surname} won't confirm that.`)) {
+      this.walkService.confirmWalk(walk).subscribe({
+          error: (err) => {
+            alert(`${err}: make sure you not confirmed the walk which you created`)
+          },
+          complete: () => this.walks.splice(index, 1)
+        }
+      )
+    }
+  }
+
 }

@@ -29,4 +29,16 @@ export class WalksService {
       )
     )
   }
+
+  deleteWalk(walk: Walk): Observable<any> {
+    return this.httpClient.delete(environment.restUrl + '/api/dog/walks/' + walk.id)
+  }
+
+  confirmWalk(walk: Walk): Observable<any> {
+    return this.httpClient.put(environment.restUrl + '/api/dog/walks/confirm', walk)
+  }
+
+  getUsersWalkWithConfirmationNeeded(): Observable<Walk[]> {
+    return this.httpClient.get<Walk[]>(environment.restUrl + '/api/dog/walks/user')
+  }
 }

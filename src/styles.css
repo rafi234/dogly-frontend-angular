@@ -2,3 +2,17 @@
 a {
   cursor: pointer;
 }
+
+div.carousel-indicators > button {
+  margin-inline: 0.4rem;
+  /*background: #DC4C64;*/
+  background: #332D2D;
+  border: none;
+  width: 2.5rem;
+  height: 3px;
+  opacity: 0.5;
+}
+
+div.carousel-indicators > button.active {
+  opacity: 0.9;
+}

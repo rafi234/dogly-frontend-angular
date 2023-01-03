@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {Walk} from "../../model/Walk";
+import {AdState, Walk} from "../../model/Walk";
 import {NgForm} from "@angular/forms";
 import {WalksService} from "../../service/walks.service";
 import {Dog} from "../../model/Dog";
@@ -16,11 +16,14 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class WalksAddComponent implements OnInit {
 
   walk: Walk = {
-    walkId: '',
+    id: '',
     description: '',
     price: 0,
     dogs: [],
-    date: new Date()
+    date: new Date(),
+    addedAt: new Date(),
+    adState: AdState.WAITING_FOR_USER,
+    confirmedAt: new Date()
   }
 
   checkedDogs: CheckedDog[] = []
@@ -38,13 +41,15 @@ export class WalksAddComponent implements OnInit {
 
   loadDogs() {
     this.dogService.getUsersDogs().subscribe({
-      next: value => this.checkedDogs = value.map((dog: Dog) => {
-        return {
-          dog: dog,
-          checked: false
-        }
-      })
-    })
+        next: value => this.checkedDogs = value.map((dog: Dog) => {
+            return {
+              dog: dog,
+              checked: false
+            }
+          }
+        )
+      }
+    )
   }
 
   closeModal() {
@@ -54,14 +59,12 @@ export class WalksAddComponent implements OnInit {
 
   addWalk(walkForm: NgForm) {
     walkForm.value.dogIds = this.checkedDogs.filter(d => d.checked).map(d => d.dog.id)
-    console.log(this.checkedDogs)
-    console.log(walkForm.value)
     this.walkService.addWalk(walkForm).subscribe(
       {
         next: () => walkForm.reset(),
         error: (err: HttpErrorResponse) => console.log(err)
       }
     )
+    this.closeModal()
   }
-
 }

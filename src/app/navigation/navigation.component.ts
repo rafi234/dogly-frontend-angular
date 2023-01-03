@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {UserService} from "../service/user.service";
 import {UserComponent} from "../admin/user/user.component";
+import {WalksService} from "../service/walks.service";
+import {AdState, Walk} from "../model/Walk";
 
 @Component({
   selector: 'app-navigation',
@@ -11,15 +13,25 @@ import {UserComponent} from "../admin/user/user.component";
 })
 export class NavigationComponent implements OnInit {
 
+  walksNeedsAction: Walk[] = []
+  states = [
+    AdState.WAITING_FOR_USER,
+    AdState.WAITING_FOR_CONFIRMATION,
+    AdState.ALLOWED,
+    AdState.DENIED
+  ]
+
   constructor(
     private router: Router,
     private authService: AuthService,
     private userService: UserService,
-    private userComponent: UserComponent
+    private userComponent: UserComponent,
+    private walkService: WalksService
   ) {
   }
 
   ngOnInit(): void {
+    this.checkForMessages()
   }
 
   isLoggedIn() {
@@ -48,5 +60,14 @@ export class NavigationComponent implements OnInit {
         error: () => console.error("There is no user logged!")
       })
     }
+  }
+
+  checkForMessages() {
+    this.walkService.getUsersWalkWithConfirmationNeeded().subscribe({
+      next: (value: Walk[]) => {
+        this.walksNeedsAction = value
+        console.log(value)
+      }
+    })
   }
 }

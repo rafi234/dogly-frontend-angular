@@ -1,0 +1,10 @@
+#div-img {
+  height: 17rem;
+}
+
+@media screen and (max-width: 380px) {
+  #div-img {
+    height: 10rem;
+  }
+}
+
