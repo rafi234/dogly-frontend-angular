@@ -53,7 +53,7 @@ export class WalksAddComponent implements OnInit {
   }
 
   closeModal() {
-    console.log(this.checkedDogs)
+    console.log(this.walk.price)
     this.activeModal.close()
   }
 

@@ -2,14 +2,15 @@ import {Dog} from "./Dog";
 import {User} from "./User";
 
 export interface Walk {
-  id: string,
-  description: string,
-  price: number,
-  dogs: Dog[],
-  date: Date,
-  addedAt: Date,
-  adState: AdState,
-  confirmedAt: Date,
+  id: string
+  description: string
+  price: number
+  dogs: Dog[]
+  date: Date
+  addedAt: Date
+  adState: AdState
+  confirmedAt: Date
+  confirmedUser?: User
   user?: User
 }
 
@@ -25,6 +26,7 @@ export class WalkUtil {
         addedAt: walk.addedAt,
         adState: walk.adState,
         confirmedAt: walk.confirmedAt,
+        confirmedUser: walk.confirmedUser,
         user: walk.user
       }
   }

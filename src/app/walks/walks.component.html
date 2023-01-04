@@ -1,11 +1,15 @@
 <div class="container">
 
-  <button class="btn btn-primary text-end mt-4" (click)="openAddWalksComponent()">Add Advertisement</button>
-
+  <button *ngIf="pageParam === 'walk'" class="btn btn-primary text-end mt-4" (click)="openAddWalksComponent()">Add Advertisement</button>
+  <h1 class="mt-3" *ngIf="pageParam === 'user'">Active walks</h1>
   <div *ngIf="walks.length == 0">
-    <h2>
+    <h2 *ngIf="pageParam === 'walk'">
       There is no walk created yet!<br>
       If you want, you can create one clicking at Add advertisement button above.
+    </h2>
+
+    <h2 *ngIf="pageParam === 'user'" class="text mt-4">
+      You haven't participated in any walk yet!
     </h2>
   </div>
   <div *ngIf="walks.length > 0" class="row row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
@@ -37,10 +41,18 @@
           </p>
         </div>
 
-        <div class="card-footer small text-center">
-          <button type="button" class="btn btn-primary mb-2" (click)="confirmWalk(walk, i)">I'll take you for a walk.
+        <div *ngIf="pageParam === 'walk'" class="card-footer small text-center">
+          <button  type="button" class="btn btn-primary mb-2" (click)="confirmWalk(walk, i)">I'll take you for a walk.
           </button>
         </div>
+
+        <div *ngIf="pageParam === 'user'" class="card-footer small text-center pb-0">
+          <p class="text-muted">
+            You confirmed this walk {{ walk.confirmedAt | timeSince }} ago. <br>
+            Planned date for this walk is {{ walk.date | date: 'MMM dddd, yyyy hh:mm' }}
+          </p>
+        </div>
+
         <div class="card-footer small text-center pb-0">
           <p class="text-muted">Added {{ walk.addedAt | timeSince }} ago</p>
         </div>

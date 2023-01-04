@@ -31,7 +31,7 @@
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <!-- Dropdown -->
-        <li class="nav-item dropdown">
+        <li *ngIf="matchRole(['ROLE_ADMIN'])" class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
             href="#"
@@ -54,7 +54,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item dropdown">
+        <li *ngIf="matchRole(['ROLE_ADMIN', 'ROLE_USER'])" class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
             href="#"
@@ -69,11 +69,11 @@
             <li>
               <button class="dropdown-item" (click)="openEditUserComponent()">Edit your data</button>
             </li>
-            <li>
+            <li [hidden]="matchRole(['ROLE_ADMIN'])">
               <a class="dropdown-item" routerLink="user/dogs">Dogs</a>
             </li>
-            <li>
-              <a class="dropdown-item" href="#">Something else here</a>
+            <li [hidden]="matchRole(['ROLE_ADMIN'])">
+              <a class="dropdown-item" (click)="navigateWithParams(['user', 'walks'], 'user')">Active walks</a>
             </li>
           </ul>
         </li>
@@ -81,7 +81,7 @@
           <a class="nav-link" routerLink="meetings">Meetings</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="walks">Walks</a>
+          <a class="nav-link" (click)="navigateWithParams(['walks'],  'walk')">Walks</a>
         </li>
 
       </ul>
@@ -103,18 +103,32 @@
                     class="badge rounded-pill badge-notification bg-danger">{{ walksNeedsAction.length }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
-              <!--              TODO: should loop through all messages-->
               <li *ngFor="let walk of walksNeedsAction">
+
                 <div class="dropdown-item" *ngIf="walk.adState === states[1]">
                   <div class="dropdown-header">Sent {{ walk.confirmedAt | timeSince }} ago</div>
-                  <p class="text-dark text-center fs-6">User {{ walk.user?.name }} {{ walk.user?.surname }} want to take your dog for a walk.
+                  <p class="text-dark text-center fs-6">User {{ walk.confirmedUser?.name }} {{ walk.confirmedUser?.surname }} want to take your dog for a walk.
                     <br>Do you agree?</p>
                   <div id="confirmDiv" class="d-flex justify-content-around  mb-3">
-                    <button type="button" class="btn btn-danger mx-1">Deny</button>
-                    <button type="button" class="btn btn-success mx-1">Confirm</button>
+                    <button type="button" class="btn btn-danger mx-1" (click)="denyWalk(walk)">Deny</button>
+                    <button type="button" class="btn btn-success mx-1" (click)="allowWalk(walk)">Confirm</button>
                   </div>
-
                   <div class="dropdown-divider"></div>
+                </div>
+
+                <div class="dropdown-item" *ngIf="walk.adState === states[2]">
+                  <p class="text fs-6">Yeah! User {{ walk.user?.name }} {{ walk.user?.surname }} allowed his dog/dogs to be taken for a walk.<br>
+                    If you want to call to this user for more details use:
+                    <span class="fw-bold">{{ walk.user?.phoneNumber | numberFormatter }}</span>. Have fun!
+                  </p>
+                  <button class="btn btn-warning" (click)="closeMessage(walk, 'allowed')">Close</button>
+                </div>
+
+                <div class="dropdown-item" *ngIf="walk.adState === states[3]">
+                  <p class="text fs-6">Unfortunately! User {{ walk.user?.name }} {{ walk.user?.surname }} have not allowed his dog/dogs to be taken for a walk by you.<br>
+                    You can still take another dog for a walk! Click here to see more <a routerLink="/walks" class="fw-bold">walks</a>
+                  </p>
+                  <button class="btn btn-warning text-end" (click)="closeMessage(walk, 'denied')">Close</button>
                 </div>
               </li>
             </ul>

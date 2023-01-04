@@ -13,6 +13,7 @@
     <thead class="bg-primary text-light">
     <tr>
       <th>User</th>
+      <th>Phone number</th>
       <th>Permissions</th>
       <th>Status</th>
       <th>Address</th>
@@ -37,7 +38,10 @@
         </div>
       </td>
       <td>
-        <p class="text mb-1">{{ rolesToString(user.roles) }}</p>
+        <p class="text-center fw-bold mb-1">{{ user.phoneNumber | numberFormatter }}</p>
+      </td>
+      <td>
+        <p class="text fw-bold mb-1">{{ rolesToString(user.roles) }}</p>
       </td>
       <td>
         <span *ngIf="user.active == true" class="badge rounded-pill bg-success">Online</span>

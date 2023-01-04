@@ -36,6 +36,7 @@ export class UserComponent implements OnInit {
   }
 
   openModalEditUser(user: User) {
+    console.log(this.users)
     const modalRef = this.modalService.open(EditUserComponent)
     modalRef.componentInstance.user = user
     modalRef.result.then(result => {

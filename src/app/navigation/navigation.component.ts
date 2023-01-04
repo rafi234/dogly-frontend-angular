@@ -5,6 +5,9 @@ import {UserService} from "../service/user.service";
 import {UserComponent} from "../admin/user/user.component";
 import {WalksService} from "../service/walks.service";
 import {AdState, Walk} from "../model/Walk";
+import {HttpErrorResponse} from "@angular/common/http";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalThanksComponent} from "../modal-thanks/modal-thanks.component";
 
 @Component({
   selector: 'app-navigation',
@@ -26,7 +29,8 @@ export class NavigationComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private userComponent: UserComponent,
-    private walkService: WalksService
+    private walkService: WalksService,
+    private modalService: NgbModal
   ) {
   }
 
@@ -41,23 +45,26 @@ export class NavigationComponent implements OnInit {
   logout() {
     this.userService.logout().subscribe()
     this.authService.clear()
-    this.router.navigate(['/meetings'])
-    // TODO: add pop out window with message example "thx for using our app"
+    this.router.navigate(['meetings'])
+    this.modalService.open(ModalThanksComponent)
+    this.router.navigate(['walks'], {queryParams: {'action': 'thanks'}})
   }
 
   matchRole(roles: string[]): boolean {
     return this.userService.roleMatch(roles)
   }
 
+  navigateWithParams(path: string[], value: string) {
+    this.router.navigate(path, {queryParams: {page: value}})
+  }
+
   openEditUserComponent() {
     const email = this.authService.getEmail()
     if (email) {
       this.userService.getLoggedUser(email).subscribe({
-        next: next => {
-          this.userComponent.openModalEditUser(next)
-          this.router.navigate(['user', 'edit'])
-        },
-        error: () => console.error("There is no user logged!")
+        next: next => this.userComponent.openModalEditUser(next),
+        error: () => console.error("There is no user logged!"),
+        complete: () => this.router.navigate(['user', 'edit'])
       })
     }
   }
@@ -69,5 +76,37 @@ export class NavigationComponent implements OnInit {
         console.log(value)
       }
     })
+  }
+
+  denyWalk(walk: Walk) {
+    this.walkService.actionWalk(walk, 'forbidden').subscribe({
+      error: (err: HttpErrorResponse) => console.error(err),
+      complete: () => this.deleteWalk(walk)
+    })
+  }
+
+  allowWalk(walk: Walk) {
+    this.walkService.actionWalk(walk, 'confirmed').subscribe({
+        error: (err: HttpErrorResponse) => console.error(err),
+        complete: () => this.deleteWalk(walk)
+      }
+    )
+  }
+
+  closeMessage(walk: Walk, action: string) {
+    this.walkService.actionWalk(walk, action).subscribe({
+        error: (err: HttpErrorResponse) => console.error(err),
+        complete: () => this.deleteWalk(walk)
+      }
+    )
+  }
+
+  deleteWalk(walk: Walk) {
+    let index = -1
+    this.walksNeedsAction.find((w: Walk, i: number) => {
+      index = i
+      return walk.id == w.id
+    })
+    this.walksNeedsAction.splice(index, 1)
   }
 }

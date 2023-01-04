@@ -26,19 +26,22 @@ import {AddDogComponent} from './user/dogs/add-dog/add-dog.component';
 import {EditDogComponent} from './user/dogs/edit-dog/edit-dog.component';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {TimeSincePipe} from "./pipe/TimeSincePipe";
+import {PhoneNumberPipe} from "./pipe/PhoneNumberPipe";
+import { ModalThanksComponent } from './modal-thanks/modal-thanks.component';
+import { ForbiddenSideComponent } from './forbidden-side/forbidden-side.component';
 
 const routes: Routes = [
-  // {path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService], data:{roles: ['ADMINISTRATOR']}},
-  {path: 'admin/user', component: UserComponent},
-  {path: 'admin/dogs', component: UserDogsComponent},
-  {path: 'user/dogs', component: UserDogsComponent},
-  {path: 'user/edit', component: EmptyComponent},
-  {path: 'walks', component: WalksComponent},
-  {path: 'meetings', component: MeetingsComponent},
-  {path: 'register', component: RegistrationComponent},
-  {path: 'login', component: LoginComponent},
-  {path: '404', component: PageNotFoundComponent},
-  {path: '**', redirectTo: '404'}
+  { path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService], data:{ roles: ['ROLE_ADMIN']}},
+  { path: 'admin/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_ADMIN']}},
+  { path: 'user/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
+  { path: 'user/edit', component: EmptyComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
+  { path: 'user/walks', component: WalksComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
+  { path: 'walks', component: WalksComponent},
+  { path: 'meetings', component: MeetingsComponent},
+  { path: 'register', component: RegistrationComponent},
+  { path: 'login', component: LoginComponent},
+  { path: '404', component: PageNotFoundComponent},
+  { path: '**', redirectTo: '404'}
 ];
 
 @NgModule({
@@ -59,7 +62,10 @@ const routes: Routes = [
     EmptyComponent,
     AddDogComponent,
     EditDogComponent,
-    TimeSincePipe
+    TimeSincePipe,
+    PhoneNumberPipe,
+    ModalThanksComponent,
+    ForbiddenSideComponent
   ],
   imports: [
     BrowserModule,
