@@ -1,10 +1,12 @@
-import {Component, Injectable, OnInit} from '@angular/core';
+import {Component, Injectable, Input, OnInit} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Dog} from 'src/app/model/Dog';
 import {User} from "../../model/User";
 import {UserService} from "../../service/user.service";
 import {DogsComponent} from './dogs/dogs.component';
 import {EditUserComponent} from './edit-user/edit-user.component';
+import {ManageRolesComponent} from "./manage-roles/manage-roles.component";
+import {MessageComponent} from "../../message/message.component";
 
 @Component({
   selector: 'app-user',
@@ -19,6 +21,9 @@ export class UserComponent implements OnInit {
 
   users: Array<User> = new Array<User>()
   searchText = ''
+  @Input()
+  newPassword?: string
+  clicked: boolean[] = [];
 
   constructor(
     private userService: UserService,
@@ -27,7 +32,23 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(next => this.users = next);
+    this.refreshUsers()
+  }
+
+  refreshUsers() {
+    this.userService.getUsers().subscribe(next => {
+        this.users = next
+        this.clicked = new Array<boolean>(this.users.length)
+        console.log(this.clicked)
+      }
+    );
+  }
+
+  openModalManageRoles(id: string, roles: []) {
+    const modalRef = this.modalService.open(ManageRolesComponent)
+    modalRef.componentInstance.roles = roles
+    modalRef.componentInstance.id = id
+    modalRef.result.then(() => this.refreshUsers())
   }
 
   openModalDogs(dogs: Array<Dog>) {
@@ -36,6 +57,7 @@ export class UserComponent implements OnInit {
   }
 
   openModalEditUser(user: User) {
+    console.log(this.users)
     const modalRef = this.modalService.open(EditUserComponent)
     modalRef.componentInstance.user = user
     modalRef.result.then(result => {
@@ -53,11 +75,31 @@ export class UserComponent implements OnInit {
     )
   }
 
+  openChangedPasswordSuccessfullyModal() {
+    const modalRef = this.modalService.open(MessageComponent)
+    modalRef.componentInstance.title = 'Success'
+    modalRef.componentInstance.content = 'You changed password successfully.'
+  }
+
+
   rolesToString(roles: string[]): string {
     let str = ''
     for (let i = 0; i < roles.length; ++i) {
-      str = str.concat(' ' + roles[i].substring(5))
+      str = str.concat(roles[i].substring(5) + ', ')
     }
-    return str
+    return str.substring(0, str.length - 2)
+  }
+
+  changePassword(id: string, index: number) {
+    if (this.newPassword)
+      this.userService.changePassword(this.newPassword, id).subscribe({
+        complete: () => this.openChangedPasswordSuccessfullyModal()
+        }
+      )
+    this.onNewPasswordButtonClicked(index)
+  }
+
+  onNewPasswordButtonClicked(index: number) {
+    this.clicked[index] = !this.clicked[index]
   }
 }

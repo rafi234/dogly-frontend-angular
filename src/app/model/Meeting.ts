@@ -6,9 +6,9 @@ export class Meeting {
   description: string
   addedAt: Date
   date: Date
-  interested: number
-  going: number
   title: string
+  goingClicked?: User[]
+  interestedClicked?: User[]
   user?: User
   dogPark?: DogPark
 
@@ -17,21 +17,21 @@ export class Meeting {
     description: string,
     addedAt: Date,
     date: Date,
-    interested: number,
-    going: number,
     title: string,
+    goingClicked?: User[],
+    interestedClicked?: User[],
     dogPark?: DogPark,
     user?: User
   ) {
-    this.id = id;
-    this.description = description;
-    this.addedAt = addedAt;
+    this.id = id
+    this.description = description
+    this.addedAt = addedAt
     this.date = date
-    this.user = user;
-    this.interested = interested;
-    this.going = going;
+    this.user = user
     this.title = title
     this.dogPark = dogPark
+    this.goingClicked = goingClicked
+    this.interestedClicked = interestedClicked
   }
 
   static fromHttp(meeting: Meeting, date: any, addedAt: any): Meeting {
@@ -46,12 +46,18 @@ export class Meeting {
       meeting.description,
       addedAt,
       date,
-      meeting.interested,
-      meeting.going,
       meeting.title,
+      this.userArrayFromHttp(meeting.goingClicked),
+      this.userArrayFromHttp(meeting.interestedClicked),
       dogPark,
       user
     )
+  }
+
+  private static userArrayFromHttp(users?: User[]): User[] {
+    if (users)
+      return users.map(user => User.fromHttp(user))
+    return []
   }
 
   isMeetingValid() {
@@ -59,9 +65,4 @@ export class Meeting {
       this.description !== '' &&
       this.title !== ''
   }
-
-  // static getDateFromHttp(date: Array<number>): Date {
-  //   console.log(date)
-  //   return new Date(date[0], date[1], date[2], date[3], date[4], date[5])
-  // }
 }

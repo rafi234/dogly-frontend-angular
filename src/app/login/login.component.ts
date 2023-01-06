@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../service/auth.service';
 import {NgForm} from "@angular/forms";
 import {UserService} from "../service/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private userService:UserService
+    private userService:UserService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -34,7 +36,10 @@ export class LoginComponent implements OnInit {
           this.message = 'Your email or password was not recognised - try again.'
           this.whileLogging = false
         },
-        complete: () => this.whileLogging = false
+        complete: () => {
+          this.whileLogging = false
+          this.router.navigate(['meetings'])
+        }
       }
     )
 

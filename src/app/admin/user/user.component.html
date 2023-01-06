@@ -2,7 +2,7 @@
   <!--  search bar -->
   <div class="input-group rounded my-3 w-100 text-center">
     <input id="searchBar" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-           aria-describedby="search-addon" [(ngModel)]="searchText"/>
+           aria-describedby="search-addon" autocomplete="off" [(ngModel)]="searchText"/>
     <span class="input-group-text border-0" id="search-addon">
           <i class="fas fa-search"></i>
         </span>
@@ -13,15 +13,18 @@
     <thead class="bg-primary text-light">
     <tr>
       <th>User</th>
-      <th>Permissions</th>
-      <th>Status</th>
+      <th class="px-2">Phone number</th>
+      <th class="px-2">Permissions</th>
+      <th class="px-2">Status</th>
       <th>Address</th>
-      <th>Dogs</th>
-      <th>Edit</th>
+      <th class="px-2">Dogs</th>
+      <th class="px-2">Edit</th>
+      <th class="px-2">Change password</th>
+      <th class="px-2">Permission manager</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let user of users | filter:searchText">
+    <tr *ngFor="let user of users| filter:searchText; let i = index;">
       <td>
         <div class="d-flex align-items-center">
           <img
@@ -37,7 +40,10 @@
         </div>
       </td>
       <td>
-        <p class="text mb-1">{{ rolesToString(user.roles) }}</p>
+        <p class="text-center fw-bold mb-1">{{ user.phoneNumber | numberFormatter }}</p>
+      </td>
+      <td class="text-center px-2">
+        <p class="text fw-bold mb-1">{{ rolesToString(user.roles) }}</p>
       </td>
       <td>
         <span *ngIf="user.active == true" class="badge rounded-pill bg-success">Online</span>
@@ -46,15 +52,30 @@
       <td>
         {{ user.address.country }}, {{ user.address.city }}<br>{{ user.address.street }}, {{ user.address.postalCode }}
       </td>
-      <td>
+      <td class="px-2">
         <button type="button" class="btn btn-secondary" data-mdb-toggle="modal" data-mdb-target="#dogList"
                 (click)="openModalDogs(user.dogs)">
           Dogs
         </button>
       </td>
-      <td>
-        <button type="button" class="btn btn-secondary btn-sm" (click)="openModalEditUser(user)">
+      <td class="px-2">
+        <button type="button" class="btn btn-secondary" (click)="openModalEditUser(user)">
           Edit
+        </button>
+      </td>
+      <td class="text-center px-2">
+        <button *ngIf="!clicked[i]" type="button" class="btn btn-secondary" (click)="onNewPasswordButtonClicked(i)">
+          <i class="fas fa-key"></i>
+        </button>
+        <div *ngIf="clicked[i]" class="form-text">
+          <label class="form-label" for="newPassword">Enter new password</label>
+          <input type="text" id="newPassword" class="form-control" [(ngModel)]="newPassword" name="newPassword"/>
+          <button class="btn btn-success btn-sm mt-1" (click)="changePassword(user.email, i)">ok</button>
+        </div>
+      </td>
+      <td class="text-center px-2">
+        <button type="button" class="btn btn-secondary" (click)="openModalManageRoles(user.id, user.roles)">
+          <i class="fas fa-toolbox fa-lg"></i>
         </button>
       </td>
     </tr>

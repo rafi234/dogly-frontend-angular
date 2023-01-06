@@ -7,18 +7,19 @@
           <i class="fas fa-search"></i>
         </span>
     </div>
-    <button class="btn btn-primary mt-3 text-end col-2 text-center mx-5 px-5 w-auto" (click)="openAddDogComponent()">Add new dog
+    <button class="btn btn-primary mt-3 text-end col-2 text-center mx-5 px-5 w-auto" (click)="openAddDogComponent()">Add
+      new dog
     </button>
   </div>
-    <div class="row">
-      <div id="dogCard" class="card mt-5 col-xxl-3 col-lg-4 col-sm-6 col-12" *ngFor="let dog of dogs | filter:searchText; let i = index">
-
+  <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 g-sm-2 g-md-4 g-xxl-3">
+    <div class="col" *ngFor="let dog of dogs | filter:searchText; let i = index">
+      <div id="dogCard" class="card mt-5">
         <ngb-carousel id="carousel-{{i}}" #carousel [interval]="config.interval" [wrap]="config.wrap"
                       [keyboard]="config.keyboard"
         >
           <ng-template ngFor let-slide [ngForOf]="dog.images">
             <ng-template ngbSlide>
-              <img class="d-block w-100 rounded-5 px-1" [src]="slide.url" [alt]="slide.file.name">
+              <img class="card-img-top" [src]="slide.url" [alt]="slide.file.name">
             </ng-template>
           </ng-template>
         </ngb-carousel>
@@ -37,6 +38,6 @@
         </div>
       </div>
     </div>
-
   </div>
+</div>
 

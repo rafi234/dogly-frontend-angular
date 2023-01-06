@@ -57,7 +57,6 @@ export class MeetingsService {
   }
 
 
-  //TODO: needs authenticated user
   action(id: string, action: string): Observable<any> {
     return this.httpClient.put(environment.restUrl + '/api/meetings/' + id + '/action?action=' + action, null)
   }

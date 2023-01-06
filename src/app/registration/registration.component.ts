@@ -25,7 +25,7 @@ export class RegistrationComponent implements OnInit {
   passwordHasProperLength = false
 
   constructor(private userService : UserService, private router: Router) {
-    this.user = new User('', '', '', '',
+    this.user = new User('', '', '', '', 0,
     new Address('', '', '', '', '', ''),
     new Array<Dog>(), new Array<Role>(), false)
   }

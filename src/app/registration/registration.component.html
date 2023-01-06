@@ -1,7 +1,7 @@
 <div class="container m-4">
   <h1>Register to dogly</h1>
-  <div class="row"> <!--TODO justify-content-center do it responsible-->
-    <form id="form" class="col-md-6 mt-3" #registrationForm="ngForm">
+  <div class="row">
+    <form id="form" class="col-md-6 mt-3" #registrationForm="ngForm" autocomplete="off">
 
       <div class="form-group">
         <label for="name">First name</label>
@@ -25,7 +25,7 @@
       <div class="form-group mb-1">
         <label class="form-label" for="email">Email address</label>
         <input type="email" id="email" class="form-control" placeholder="Email"
-               [(ngModel)]="user.email" name="email" email="true" required #emailField="ngModel"/>
+               [(ngModel)]="user.email" name="email" email="true" autocomplete="false" required #emailField="ngModel"/>
         <div *ngIf="emailField.invalid && emailField.touched" class="alert alert-danger p-2">
           <i class="fas fa-times-circle"></i> Email: <br> - cannot be blank,<br> - should contain @, <br> - have domain name.
         </div>
@@ -35,7 +35,7 @@
       <div class="form-group mb-1">
         <label class="form-label" for="password">Password</label>
         <input type="password" id="password" class="form-control" placeholder="password"
-               [(ngModel)]="password" name="password" required #passwordField="ngModel"/>
+               [(ngModel)]="password" name="password" autocomplete="false" required #passwordField="ngModel"/>
         <div *ngIf="passwordField.touched && passwordValidation()" class="alert alert-danger p-2">
           Password must contain:
           <p *ngIf="passwordHasProperLength === false" >
@@ -63,6 +63,12 @@
         <div *ngIf="repeatedPasswordField.invalid && repeatedPasswordField.touched" class="alert alert-danger p-2">
           <i class="fas fa-times-circle"></i> This field cannot be blank!
         </div>
+      </div>
+
+      <div class="form-group mb-1">
+        <label class="form-label" for="email">Email address</label>
+        <input type="email" id="phoneNumber" class="form-control" placeholder="Phone Number"
+               [(ngModel)]="user.email" name="phoneNumber" required #phoneNumberField="ngModel"/>
       </div>
 
       <!-- Address input -->

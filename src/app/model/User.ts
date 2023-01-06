@@ -5,17 +5,21 @@ export class User {
   name: string
   surname: string
   email: string
+  phoneNumber: number
   address: Address
   dogs: Dog[]
   roles: Role[]
   active: boolean
 
   constructor(id: string, name: string, surname: string, email: string,
-              address: Address, dogs: Dog[], roles: Role[], active: boolean) {
+              phoneNumber: number, address: Address, dogs: Dog[],
+              roles: Role[], active: boolean
+  ) {
     this.id = id
     this.name = name
     this.surname = surname
     this.email = email
+    this.phoneNumber = phoneNumber
     this.address = address
     this.dogs = dogs
     this.roles = roles
@@ -31,8 +35,8 @@ export class User {
     }
     return new User(
       data.id, data.name, data.surname,
-      data.email, newAddress, dogs,
-      roles, data.active
+      data.email, data.phoneNumber,
+      newAddress, dogs, roles, data.active
     )
   }
 }
@@ -69,7 +73,8 @@ export class Address {
 
 export enum Role {
   ROLE_USER = 'User',
-  ROLE_ADMIN = 'Admin'
+  ROLE_ADMIN = 'Admin',
+  ROLE_OWNER = 'Owner'
 }
 
 

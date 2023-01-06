@@ -15,7 +15,7 @@ export class AddMeetingComponent implements OnInit {
   @Input()
   selected?: DogPark
   @Input()
-  meeting: Meeting = new Meeting('', '', new Date(), new Date(), 0, 0, '', undefined, undefined)
+  meeting: Meeting = new Meeting('', '', new Date(), new Date(), '')
   dogParks?: Array<DogPark>
 
   selectControl = new FormControl('', [Validators.required])

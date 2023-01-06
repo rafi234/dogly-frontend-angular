@@ -1,8 +1,16 @@
 
+#buttons > button {
+  width: 40%;
+}
+
 img {
-  padding: 0.5rem;
   height: 100%;
   border-radius: 1rem 0 0 1rem;
+}
+
+#header {
+  color: #B71C1C;
+  background: #FFCDD2;
 }
 
 #description {

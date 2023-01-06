@@ -100,5 +100,17 @@ export class UserService {
         )
     )
   }
+
+  manageRoles(id: string, action: string, role: string) {
+    return this.httpClient.put(`${environment.restUrl}/api/grant/user/${id}?action=${action}&role=${role}`,  null)
+  }
+
+  changePassword(password: string, id: string) {
+    const newPassword = {
+      'new_password': password,
+      'id': id
+    }
+    return this.httpClient.put(environment.restUrl + '/api/user/update/password', newPassword);
+  }
 }
 

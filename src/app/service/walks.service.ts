@@ -18,8 +18,8 @@ export class WalksService {
     return this.httpClient.post<Walk>(environment.restUrl + '/api/dog/walks', walk.value)
   }
 
-  getWalks(): Observable<Array<Walk>> {
-    return this.httpClient.get<Array<Walk>>(environment.restUrl + '/api/dog/walks').pipe(
+  getWalks(page: string): Observable<Array<Walk>> {
+    return this.httpClient.get<Array<Walk>>(environment.restUrl + '/api/dog/walks?page=' + page).pipe(
       map(
         data => {
           const walks = new Array<Walk>()
@@ -28,5 +28,17 @@ export class WalksService {
         }
       )
     )
+  }
+
+  deleteWalk(walk: Walk): Observable<any> {
+    return this.httpClient.delete(environment.restUrl + '/api/dog/walks/' + walk.id)
+  }
+
+  getUsersWalkWithConfirmationNeeded(): Observable<Walk[]> {
+    return this.httpClient.get<Walk[]>(environment.restUrl + '/api/dog/walks/user')
+  }
+
+  actionWalk(walk: Walk, requestParam: string): Observable<any> {
+    return this.httpClient.put(environment.restUrl + '/api/dog/walks/confirm?action=' + requestParam, walk)
   }
 }
