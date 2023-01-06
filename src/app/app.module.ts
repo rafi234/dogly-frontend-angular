@@ -27,13 +27,15 @@ import {EditDogComponent} from './user/dogs/edit-dog/edit-dog.component';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {TimeSincePipe} from "./pipe/TimeSincePipe";
 import {PhoneNumberPipe} from "./pipe/PhoneNumberPipe";
-import { ModalThanksComponent } from './modal-thanks/modal-thanks.component';
 import { ForbiddenSideComponent } from './forbidden-side/forbidden-side.component';
+import { ManageRolesComponent } from './admin/user/manage-roles/manage-roles.component';
+import { ErrorMessageComponent } from './error-message/error-message.component';
+import { MessageComponent } from './message/message.component';
 
 const routes: Routes = [
-  { path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService], data:{ roles: ['ROLE_ADMIN']}},
-  { path: 'admin/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_ADMIN']}},
-  { path: 'user/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
+  { path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService], data:{ roles: ['ROLE_ADMIN', "ROLE_OWNER"]}},
+  { path: 'admin/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_ADMIN', "ROLE_OWNER"]}},
+  { path: 'user/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER', "ROLE_OWNER"]}},
   { path: 'user/edit', component: EmptyComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
   { path: 'user/walks', component: WalksComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
   { path: 'walks', component: WalksComponent},
@@ -64,8 +66,10 @@ const routes: Routes = [
     EditDogComponent,
     TimeSincePipe,
     PhoneNumberPipe,
-    ModalThanksComponent,
-    ForbiddenSideComponent
+    ForbiddenSideComponent,
+    ManageRolesComponent,
+    ErrorMessageComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,

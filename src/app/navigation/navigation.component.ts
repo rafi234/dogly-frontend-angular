@@ -7,7 +7,7 @@ import {WalksService} from "../service/walks.service";
 import {AdState, Walk} from "../model/Walk";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ModalThanksComponent} from "../modal-thanks/modal-thanks.component";
+import {MessageComponent} from "../message/message.component";
 
 @Component({
   selector: 'app-navigation',
@@ -46,7 +46,9 @@ export class NavigationComponent implements OnInit {
     this.userService.logout().subscribe()
     this.authService.clear()
     this.router.navigate(['meetings'])
-    this.modalService.open(ModalThanksComponent)
+    const modalRef = this.modalService.open(MessageComponent)
+    modalRef.componentInstance.title = "Thank you"
+    modalRef.componentInstance.content = "Thank you for using our app. We hope you will come back soon. Have a nice day!"
     this.router.navigate(['walks'], {queryParams: {'action': 'thanks'}})
   }
 

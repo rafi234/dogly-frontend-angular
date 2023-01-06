@@ -73,7 +73,8 @@ export class Address {
 
 export enum Role {
   ROLE_USER = 'User',
-  ROLE_ADMIN = 'Admin'
+  ROLE_ADMIN = 'Admin',
+  ROLE_OWNER = 'Owner'
 }
 
 
