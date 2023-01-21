@@ -13,8 +13,8 @@ export class MeetingsService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getMeetings(): Observable<Array<Meeting>> {
-    return this.httpClient.get<Array<Meeting>>(environment.restUrl + '/api/meetings').pipe(
+  getMeetings(pageParam: string): Observable<Array<Meeting>> {
+    return this.httpClient.get<Array<Meeting>>(environment.restUrl + '/api/meetings?page=' + pageParam).pipe(
       map(
         data => {
           const meetings = new Array<Meeting>()
@@ -52,12 +52,18 @@ export class MeetingsService {
         "imgUrl": meeting.dogPark?.imgUrl
       }
     }
-    console.log(newMeeting)
     return this.httpClient.post<Meeting>(environment.restUrl + '/api/meetings', newMeeting)
   }
 
-
   action(id: string, action: string): Observable<any> {
     return this.httpClient.put(environment.restUrl + '/api/meetings/' + id + '/action?action=' + action, null)
+  }
+
+  deleteMeeting(id: string): Observable<any> {
+    return this.httpClient.delete(environment.restUrl + '/api/meetings/' + id)
+  }
+
+  edit(meeting: Meeting): Observable<any> {
+    return this.httpClient.put(environment.restUrl + '/api/meetings', meeting)
   }
 }

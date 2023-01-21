@@ -46,12 +46,19 @@
       <div class="form-check">
         <p class="text-start">Place</p>
         <select class="form-select" [(ngModel)]="selected" name="place" #place="ngModel" required>
+
           <option *ngIf="!isDogParkLoaded()" selected disabled>
             Loading...
           </option>
+
+          <option *ngIf="reqParam === 'edit'" [ngValue]="selected" selected>
+            {{ selected?.toString() }}
+          </option>
+
           <option *ngFor="let dogPark of dogParks" [ngValue]="dogPark">
             {{ dogPark.toString() }}
           </option>
+
         </select>
         <a *ngIf="selected" class="text-end mt-3" href="{{ selected.url }}" target="_blank">more info about this
           place</a>

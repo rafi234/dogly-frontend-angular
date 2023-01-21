@@ -3,7 +3,7 @@
   <button type="button" class="btn-close" (click)="close()"></button>
 </div>
 <div class="modal-body">
-  <form *ngIf="user">
+  <form *ngIf="user" (ngSubmit)="passBack('UPDATE')">
     <!-- 2 column grid layout with text inputs for the first and last names -->
 
     <div class="form-group">
@@ -52,8 +52,34 @@
       <input type="text" id="phone" class="form-control" [(ngModel)]="user.phoneNumber" name="phone"/>
     </div>
 
+    <div class="container-fluid">
+      <!--  Image display -->
+      <div class="row mt-2">
+        <div id="imageDiv" class="col-6 img-thumbnail p-1" *ngFor="let image of user.images; let i = index">
+          <span class="btn btn-close px-2 py-1" (click)="removeImage(i)"></span>
+          <img class="img-fluid" [src]="image.url" [alt]="image.file.name"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mb-5">
+      <!-- Image input -->
+      <div class="form-check">
+        <p>Select your images</p>
+        <input
+          type="file"
+          class="form-control"
+          multiple
+          value="select"
+          #selectFile
+          (change)="onFileSelected($event)"
+        />
+      </div>
+    </div>
+
+
     <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block mt-5" (click)="passBack('UPDATE')">Save changes</button>
+    <button type="submit" class="btn btn-primary btn-block">Save changes</button>
   </form>
 </div>
 <div class="modal-footer">

@@ -33,15 +33,19 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
 import { MessageComponent } from './message/message.component';
 
 const routes: Routes = [
-  { path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService], data:{ roles: ['ROLE_ADMIN', "ROLE_OWNER"]}},
-  { path: 'admin/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_ADMIN', "ROLE_OWNER"]}},
-  { path: 'user/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER', "ROLE_OWNER"]}},
+  { path: 'admin/user', component: UserComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_ADMIN', 'ROLE_OWNER']}},
+  { path: 'admin/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_ADMIN', 'ROLE_OWNER']}},
+  { path: 'admin/walks', component: WalksComponent, canActivate : [AuthRouteGuardService], data: {roles: ['ROLE_ADMIN', 'ROLE_OWNER']}},
+  { path: 'admin/meetings', component: MeetingsComponent, canActivate : [AuthRouteGuardService], data: {roles: ['ROLE_ADMIN', 'ROLE_OWNER']}},
+  { path: 'user/dogs', component: UserDogsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
   { path: 'user/edit', component: EmptyComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
   { path: 'user/walks', component: WalksComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
+  { path: 'user/meetings', component: MeetingsComponent, canActivate : [AuthRouteGuardService], data: { roles: ['ROLE_USER']}},
   { path: 'walks', component: WalksComponent},
   { path: 'meetings', component: MeetingsComponent},
   { path: 'register', component: RegistrationComponent},
   { path: 'login', component: LoginComponent},
+  { path: 'forbidden', component: ForbiddenSideComponent },
   { path: '404', component: PageNotFoundComponent},
   { path: '**', redirectTo: '404'}
 ];

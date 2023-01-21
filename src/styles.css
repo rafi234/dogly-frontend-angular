@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
 a {
   cursor: pointer;
 }
 
 div.carousel-indicators > button {
   margin-inline: 0.4rem;
-  /*background: #DC4C64;*/
   background: #332D2D;
   border: none;
   width: 2.5rem;
@@ -16,3 +16,8 @@ div.carousel-indicators > button {
 div.carousel-indicators > button.active {
   opacity: 0.9;
 }
+
+
+
+
+

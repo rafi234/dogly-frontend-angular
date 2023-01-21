@@ -3,16 +3,16 @@
   <div class="row">
     <form id="form" class="col-md-6 mt-3" #registrationForm="ngForm" autocomplete="off">
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label for="name">First name</label>
         <input type="text" id="name" class="form-control"
-               [(ngModel)]="user.name" name="name" placeholder="name" value="" required #nameField = "ngModel"/>
+               [(ngModel)]="user.name" name="name" placeholder="name" value="" required #nameField="ngModel"/>
         <div *ngIf="nameField.invalid && nameField.touched" class="alert alert-danger p-2">
           <i class="fas fa-times-circle"></i> Name cannot be blank!
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label class="form-label" for="lastName">Last name</label>
         <input type="text" id="lastName" class="form-control" placeholder="last name"
                [(ngModel)]="user.surname" name="surname" #surnameField="ngModel" required/>
@@ -22,23 +22,24 @@
       </div>
 
       <!-- Email input -->
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
         <label class="form-label" for="email">Email address</label>
         <input type="email" id="email" class="form-control" placeholder="Email"
                [(ngModel)]="user.email" name="email" email="true" autocomplete="false" required #emailField="ngModel"/>
         <div *ngIf="emailField.invalid && emailField.touched" class="alert alert-danger p-2">
-          <i class="fas fa-times-circle"></i> Email: <br> - cannot be blank,<br> - should contain @, <br> - have domain name.
+          <i class="fas fa-times-circle"></i> Email: <br> - cannot be blank,<br> - should contain @, <br> - have domain
+          name.
         </div>
       </div>
 
       <!--Password-->
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
         <label class="form-label" for="password">Password</label>
         <input type="password" id="password" class="form-control" placeholder="password"
                [(ngModel)]="password" name="password" autocomplete="false" required #passwordField="ngModel"/>
         <div *ngIf="passwordField.touched && passwordValidation()" class="alert alert-danger p-2">
           Password must contain:
-          <p *ngIf="passwordHasProperLength === false" >
+          <p *ngIf="passwordHasProperLength === false">
             <i class="fas fa-times-circle"></i> at least 8 characters
           </p>
           <p *ngIf="passwordContainNumber === false">
@@ -53,7 +54,7 @@
         </div>
       </div>
 
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
         <label class="form-label" for="repeatedPassword">Repeat Password</label>
         <input type="password" id="repeatedPassword" class="form-control" placeholder="password"
                [(ngModel)]="repeatedPassword" name="repeatedPassword" #repeatedPasswordField="ngModel" required/>
@@ -65,14 +66,17 @@
         </div>
       </div>
 
-      <div class="form-group mb-1">
-        <label class="form-label" for="email">Email address</label>
-        <input type="email" id="phoneNumber" class="form-control" placeholder="Phone Number"
-               [(ngModel)]="user.email" name="phoneNumber" required #phoneNumberField="ngModel"/>
+      <div class="form-group mb-2">
+        <label class="form-label" for="phoneNumber">Phone number</label>
+        <input type="tel" id="phoneNumber" class="form-control" placeholder="Phone Number"
+               [(ngModel)]="user.phoneNumber" name="phoneNumber" required #phoneNumberField="ngModel"/>
+        <div *ngIf="phoneNumberField.invalid && phoneNumberField.touched" class="alert alert-danger p-2">
+          <i class="fas fa-times-circle"></i> This field cannot be blank!
+        </div>
       </div>
 
       <!-- Address input -->
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
         <label class="form-label" for="country">Country</label>
         <input type="text" id="country" class="form-control" placeholder="country"
                [(ngModel)]="user.address.country" name="country" #countryField="ngModel" required/>
@@ -81,7 +85,7 @@
         </div>
       </div>
 
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
         <label class="form-label" for="city">City</label>
         <input type="text" id="city" class="form-control" placeholder="city"
                [(ngModel)]="user.address.city" name="city" #cityField="ngModel" required/>
@@ -90,7 +94,7 @@
         </div>
       </div>
 
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
         <label class="form-label" for="street">Street</label>
         <input type="text" id="street" class="form-control" placeholder="street"
                [(ngModel)]="user.address.street" name="street" #streetField="ngModel" required/>
@@ -99,7 +103,7 @@
         </div>
       </div>
 
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
         <label class="form-label" for="postalCode">Postal Code</label>
         <input type="text" id="postalCode" class="form-control" placeholder="postal code"
                [(ngModel)]="user.address.postalCode" name="postalCode" #codeField="ngModel" required/>
@@ -108,7 +112,7 @@
         </div>
       </div>
 
-      <div class="form-group mb-5">
+      <div class="form-group mb-3">
         <label class="form-label" for="voivodeship">Voivodeship</label>
         <input type="text" id="voivodeship" class="form-control" placeholder="voivodeship"
                [(ngModel)]="user.address.voivodeship" name="voivodeship" #voivodeshipField="ngModel" required/>
@@ -117,9 +121,37 @@
         </div>
       </div>
 
+
+      <div class="container-fluid">
+        <!--  Image display -->
+        <div class="row mt-2">
+          <div id="imageDiv" class="col-6 img-thumbnail p-1" *ngFor="let image of user.images; let i = index">
+            <span class="btn btn-close px-2 py-1" (click)="removeImage(i)"></span>
+            <img class="img-fluid" [src]="image.url" [alt]="image.file.name"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-5">
+        <!-- Image input -->
+        <div class="form-check">
+          <p>Select your images</p>
+          <input
+            type="file"
+            class="form-control"
+            multiple
+            value="select"
+            #selectFile
+            (change)="onFileSelected($event)"
+          />
+        </div>
+      </div>
+
       <!-- Submit button -->
       <div *ngIf="registrationForm.invalid" class="alert alert-warning">Form is invalid. Please complete the data.</div>
-      <button type="submit" class="btn btn-primary btn-block mb-4" (click)="signUp()" [disabled]="registrationForm.invalid">Sign up</button>
+      <button type="submit" class="btn btn-primary btn-block mb-4" (click)="signUp()"
+              [disabled]="registrationForm.invalid">Sign up
+      </button>
     </form>
   </div>
 </div>

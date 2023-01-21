@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
         },
         complete: () => {
           this.whileLogging = false
-          this.router.navigate(['meetings'])
+          this.router.navigate(['meetings'], { queryParams: { page: 'meeting' } })
         }
       }
     )

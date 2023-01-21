@@ -45,7 +45,7 @@ export class NavigationComponent implements OnInit {
   logout() {
     this.userService.logout().subscribe()
     this.authService.clear()
-    this.router.navigate(['meetings'])
+    this.router.navigate(['meetings'], {queryParams: {page: 'meeting'}})
     const modalRef = this.modalService.open(MessageComponent)
     modalRef.componentInstance.title = "Thank you"
     modalRef.componentInstance.content = "Thank you for using our app. We hope you will come back soon. Have a nice day!"
@@ -54,10 +54,6 @@ export class NavigationComponent implements OnInit {
 
   matchRole(roles: string[]): boolean {
     return this.userService.roleMatch(roles)
-  }
-
-  navigateWithParams(path: string[], value: string) {
-    this.router.navigate(path, {queryParams: {page: value}})
   }
 
   openEditUserComponent() {

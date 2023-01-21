@@ -28,7 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
           (err: HttpErrorResponse) => {
             this.openModalWithErrorMessage(err)
             if (err.status === 401) {
-              this.router.navigate(['/login'])
+              this.router.navigate(['login'])
             } else if (err.status === 403) {
               this.router.navigate(['forbidden'])
             }

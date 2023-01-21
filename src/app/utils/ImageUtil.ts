@@ -1,5 +1,5 @@
-import {Dog} from "../model/Dog";
 import {DomSanitizer} from "@angular/platform-browser";
+import {FileHandle} from "../model/file-handle";
 
 export class ImageUtil {
 
@@ -16,14 +16,14 @@ export class ImageUtil {
     }
   }
 
-  static prepareFormData(dog: Dog, name1: string, name2: string): FormData {
+  static prepareFormData(object: any, name1: string, name2: string): FormData {
     const formData = new FormData()
     formData.append(
       name1,
-      new Blob([JSON.stringify(dog)], {type: 'application/json'})
+      new Blob([JSON.stringify(object)], {type: 'application/json'})
     )
-    if (dog.images) {
-      dog.images.forEach(image => {
+    if (object.images) {
+      object.images.forEach((image: FileHandle) => {
         formData.append(
           name2,
           image.file,

@@ -8,11 +8,6 @@ img {
   border-radius: 1rem 0 0 1rem;
 }
 
-#header {
-  color: #B71C1C;
-  background: #FFCDD2;
-}
-
 #description {
   height: 4.8rem;
 }
@@ -22,5 +17,9 @@ img {
   img {
     border-radius: 0.4rem 0.4rem 0 0;
     width: 100%;
+  }
+
+  #buttons > button {
+    width: 70%;
   }
 }

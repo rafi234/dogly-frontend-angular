@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DogService} from "../../service/dog.service";
 import {Dog} from "../../model/Dog";
 import {NgbCarouselConfig, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {AddDogComponent} from "./add-dog/add-dog.component";
-import {map} from "rxjs";
+import {map, Subscription} from "rxjs";
 import {ImageProcessingService} from "../../service/image-processing.service";
 import {EditDogComponent} from "./edit-dog/edit-dog.component";
 
@@ -13,10 +13,12 @@ import {EditDogComponent} from "./edit-dog/edit-dog.component";
   templateUrl: './user-dogs.component.html',
   styleUrls: ['./user-dogs.component.css']
 })
-export class UserDogsComponent implements OnInit {
+export class UserDogsComponent implements OnInit, OnDestroy {
 
   dogs: Array<Dog> = new Array<Dog>()
   searchText = ''
+
+  dogsSubscription?: Subscription
 
 
   constructor(private dogService: DogService,
@@ -33,17 +35,37 @@ export class UserDogsComponent implements OnInit {
   }
 
   loadData() {
-    return this.dogService.getUsersDogs()
-      .pipe(
-        map((x: Dog[]) => x.map((dog: Dog) => {
-            dog.images = this.imageProcessingService.createImages(dog.images)
-            return dog
-          }
-        ))
-      )
-      .subscribe(next => {
-        return this.dogs = next;
-      })
+    const path = this.getPath()
+    if (path === '/user/dogs') {
+      this.dogsSubscription = this.dogService.getUsersDogs()
+        .pipe(
+          map((x: Dog[]) => x.map((dog: Dog) => {
+              dog.images = this.imageProcessingService.createImages(dog.images)
+              return dog
+            }
+          ))
+        )
+        .subscribe(next => {
+          return this.dogs = next;
+        })
+    }
+    if (path === '/admin/dogs') {
+      this.dogsSubscription = this.dogService.getAllDogs()
+        .pipe(
+          map((x: Dog[]) => x.map((dog: Dog) => {
+              dog.images = this.imageProcessingService.createImages(dog.images)
+              return dog
+            }
+          ))
+        )
+        .subscribe(next => {
+          return this.dogs = next;
+        })
+    }
+  }
+
+  getPath(): string {
+    return this.router.url
   }
 
   openAddDogComponent() {
@@ -70,6 +92,10 @@ export class UserDogsComponent implements OnInit {
       })
       this.dogs.splice(i, 1)
     }
+  }
+
+  ngOnDestroy() {
+    this.dogsSubscription?.unsubscribe()
   }
 
   private navigate(action: string) {

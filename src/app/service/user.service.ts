@@ -5,6 +5,7 @@ import {User} from "../model/User";
 import {environment} from "../../environments/environment";
 import {NgForm} from "@angular/forms";
 import {AuthService} from "./auth.service";
+import {ImageUtil} from "../utils/ImageUtil";
 
 @Injectable({
   providedIn: 'root'
@@ -52,20 +53,8 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
-    if (user.address) {
-      const updatedUser = {
-        'name': user.name,
-        'surname': user.surname,
-        'email': user.email,
-        'street': user.address.street,
-        'city': user.address.city,
-        'country': user.address.country,
-        'postal_code': user.address.postalCode,
-        'voivodeship': user.address.voivodeship
-      }
-      return this.httpClient.put<User>(environment.restUrl + '/api/user/update', updatedUser, {withCredentials: false})
-    }
-    throw new Error()
+    const formDataUser = this.getPreparedUser(user)
+    return this.httpClient.put<User>(environment.restUrl + '/api/user/update', formDataUser, { withCredentials: false })
   }
 
   deleteUser(user: User): Observable<any> {
@@ -73,18 +62,8 @@ export class UserService {
   }
 
   addUser(user: User, password: string): Observable<User> {
-    const newUser = {
-      'name': user.name,
-      'surname': user.surname,
-      'email': user.email,
-      'password': password,
-      'street': user.address.street,
-      'city': user.address.city,
-      'country': user.address.country,
-      'postal_code': user.address.postalCode,
-      'voivodeship': user.address.voivodeship
-    }
-    return this.httpClient.post<User>(environment.restUrl + "/api/auth/signup", newUser)
+    const formDataUser = this.getPreparedUser(user, password)
+    return this.httpClient.post<User>(environment.restUrl + "/api/auth/signup", formDataUser)
   }
 
   logout() : Observable<any> {
@@ -111,6 +90,24 @@ export class UserService {
       'id': id
     }
     return this.httpClient.put(environment.restUrl + '/api/user/update/password', newPassword);
+  }
+
+  private getPreparedUser(user: User, password?: string): FormData {
+    const newUser = {
+      'id': user.id,
+      'name': user.name,
+      'surname': user.surname,
+      'email': user.email,
+      'street': user.address.street,
+      'city': user.address.city,
+      'country': user.address.country,
+      'postal_code': user.address.postalCode,
+      'voivodeship': user.address.voivodeship,
+      'phoneNumber': user.phoneNumber,
+      'images': user.images,
+      'password': password
+    }
+    return  ImageUtil.prepareFormData(newUser, 'user', 'imageFiles')
   }
 }
 

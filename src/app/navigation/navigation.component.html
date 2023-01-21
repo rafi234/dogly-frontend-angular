@@ -3,14 +3,8 @@
   <!-- Container wrapper -->
   <div class="container">
     <!-- Navbar brand -->
-    <a class="navbar-brand me-2" href="https://mdbgo.com/">
-      <img
-        src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-        height="16"
-        alt="MDB Logo"
-        loading="lazy"
-        style="margin-top: -1px;"
-      />
+    <a id="logo-ref" class="navbar-brand" routerLink="meetings" [queryParams]="{ page: 'meeting' }">
+      <i id="logo" class="fas fa-dog fs-lg mx-2 p-2 rounded-3"></i> Dogly
     </a>
 
     <!-- Toggle button -->
@@ -31,7 +25,7 @@
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <!-- Dropdown -->
-        <li *ngIf="matchRole(['ROLE_ADMIN'])" class="nav-item dropdown">
+        <li *ngIf="matchRole(['ROLE_ADMIN', 'ROLE_OWNER'])" class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
             href="#"
@@ -50,7 +44,10 @@
               <a class="dropdown-item" routerLink="admin/user">Users</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" routerLink="admin/walks" [queryParams]="{ page: 'admin' }">Walks</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="admin/meetings" [queryParams]="{ page: 'admin' }">Meetings</a>
             </li>
           </ul>
         </li>
@@ -69,19 +66,22 @@
             <li>
               <button class="dropdown-item" (click)="openEditUserComponent()">Edit your data</button>
             </li>
-            <li [hidden]="matchRole(['ROLE_ADMIN'])">
+            <li [hidden]="!matchRole(['ROLE_USER'])">
               <a class="dropdown-item" routerLink="user/dogs">Dogs</a>
             </li>
-            <li [hidden]="matchRole(['ROLE_ADMIN'])">
-              <a class="dropdown-item" (click)="navigateWithParams(['user', 'walks'], 'user')">Active walks</a>
+            <li [hidden]="!matchRole(['ROLE_USER'])">
+              <a class="dropdown-item" routerLink="user/walks" [queryParams]="{ page: 'user' }">Active walks</a>
+            </li>
+            <li [hidden]="!matchRole(['ROLE_USER'])">
+              <a class="dropdown-item" routerLink="user/meetings" [queryParams]="{ page: 'user' }">Your meetings</a>
             </li>
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="meetings">Meetings</a>
+          <a class="nav-link" routerLink="meetings" [queryParams]="{ page: 'meeting' }">Meetings</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="navigateWithParams(['walks'],  'walk')">Walks</a>
+          <a class="nav-link" routerLink="walks" [queryParams]="{ page: 'walk' }">Walks</a>
         </li>
 
       </ul>
@@ -98,11 +98,12 @@
               data-mdb-toggle="dropdown"
               aria-expanded="false"
             >
-              <span><i class="fas fa-envelope fa-lg"></i></span>
+              <span><i class="fas fa-envelope fa-lg" style="font-size: 1em"></i></span>
               <span *ngIf="walksNeedsAction.length > 0"
                     class="badge rounded-pill badge-notification bg-danger">{{ walksNeedsAction.length }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
+              <li *ngIf="walksNeedsAction.length === 0"><div class="dropdown-item">No messages</div></li>
               <li *ngFor="let walk of walksNeedsAction">
 
                 <div class="dropdown-item" *ngIf="walk.adState === states[1]">
@@ -133,18 +134,21 @@
               </li>
             </ul>
           </li>
-          <li>
-            <button *ngIf="!isLoggedIn()" type="button" class="btn btn-link px-3 me-2" routerLink="/login">
+          <li class="nav-item">
+            <button *ngIf="!isLoggedIn()" type="button" class="btn btn-link px-3 me-2" routerLink="/login"
+                    style="font-size: 1.3rem">
               Login
             </button>
           </li>
           <li class="nav-item">
-            <button *ngIf="isLoggedIn()" type="button" class="btn btn-link px-3 me-2" (click)="logout()">
+            <button *ngIf="isLoggedIn()" type="button" class="btn btn-link px-3 me-2" (click)="logout()"
+            style="font-size: 1.3rem">
               Logout
             </button>
           </li>
           <li class="nav-item">
-            <button *ngIf="!isLoggedIn()" type="button" class="btn btn-primary me-3" routerLink="/register">
+            <button *ngIf="!isLoggedIn()" type="button" class="btn btn-primary me-3 px-3 py-2" routerLink="/register"
+                    style="font-size: 1.1rem">
               Sign up for free
             </button>
           </li>

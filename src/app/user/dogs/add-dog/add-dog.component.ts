@@ -6,6 +6,7 @@ import {NgForm} from "@angular/forms";
 import {DogService} from "../../../service/dog.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ImageUtil} from "../../../utils/ImageUtil";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-add-dog',
@@ -26,7 +27,8 @@ export class AddDogComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private activeModal: NgbActiveModal,
-    private dogService: DogService
+    private dogService: DogService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -43,10 +45,13 @@ export class AddDogComponent implements OnInit {
       this.dogService.addDog(dogFromFormData).subscribe(
         {
           next: () => dogForm.reset(),
-          error: (err: HttpErrorResponse) => console.log(err)
+          error: (err: HttpErrorResponse) => console.log(err),
+          complete: () => {
+            this.router.navigate(['user', 'dogs'])
+            this.activeModal.close(this.dog)
+          }
         }
       )
-      this.activeModal.close(this.dog)
     }
   }
 

@@ -5,6 +5,7 @@ import {ImageUtil} from "../../../utils/ImageUtil";
 import {DomSanitizer} from "@angular/platform-browser";
 import {HttpErrorResponse} from "@angular/common/http";
 import {DogService} from "../../../service/dog.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-edit-dog',
@@ -24,7 +25,8 @@ export class EditDogComponent implements OnInit {
   constructor(
     private activeModal: NgbActiveModal,
     private sanitizer: DomSanitizer,
-    private dogService: DogService
+    private dogService: DogService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -40,10 +42,13 @@ export class EditDogComponent implements OnInit {
 
       this.dogService.editDog(dogFromFormData).subscribe(
         {
-          error: (err: HttpErrorResponse) => console.log(err)
+          error: (err: HttpErrorResponse) => console.log(err),
+          complete: () => {
+            this.activeModal.close()
+            this.router.navigate(['user', 'dogs'])
+          }
         }
       )
-      this.activeModal.close()
     }
   }
 

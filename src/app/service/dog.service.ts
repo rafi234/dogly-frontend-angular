@@ -14,11 +14,15 @@ export class DogService {
   getUsersDogs(): Observable<Dog[]> {
     return this.httpClient.get<Dog[]>(environment.restUrl + "/api/dog/user").pipe(
       map(
-        data => {
-          const dogs = new Array<Dog>()
-          data.forEach(dog => dogs.push(Dog.fromHttp(dog)))
-          return dogs
-        }
+        data =>  this.prepareDataFromHttp(data)
+      )
+    )
+  }
+
+  getAllDogs(): Observable<Dog[]> {
+    return this.httpClient.get<Dog[]>(environment.restUrl + '/api/dog').pipe(
+      map(
+        data => this.prepareDataFromHttp(data)
       )
     )
   }
@@ -33,5 +37,11 @@ export class DogService {
 
   deleteDog(id: string) {
     return this.httpClient.delete(environment.restUrl + '/api/dog/' + id)
+  }
+
+  private prepareDataFromHttp(data: Dog[]): Dog[] {
+    const dogs = new Array<Dog>()
+    data.forEach(dog => dogs.push(Dog.fromHttp(dog)))
+    return dogs
   }
 }

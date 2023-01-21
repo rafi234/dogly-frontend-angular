@@ -41,4 +41,8 @@ export class WalksService {
   actionWalk(walk: Walk, requestParam: string): Observable<any> {
     return this.httpClient.put(environment.restUrl + '/api/dog/walks/confirm?action=' + requestParam, walk)
   }
+
+  updateWalk(walk: Walk) : Observable<Walk>{
+    return this.httpClient.put<Walk>(environment.restUrl + '/api/dog/walks', walk)
+  }
 }

@@ -2,6 +2,9 @@
   height: 17rem;
 }
 
+#admin-walk-buttons > button {
+  width: 40%;
+}
 @media screen and (max-width: 380px) {
   #div-img {
     height: 10rem;

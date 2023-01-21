@@ -7,16 +7,16 @@
   aria-labelledby="staticBackdropLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog ">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+      <div id="header" class="modal-header">
+        <h4 class="modal-title" id="staticBackdropLabel">Permission denied!</h4>
         <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">...</div>
+      <div class="modal-body text-center"><h5>Forbidden 403: You have to be logged as user to open this section!</h5></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="button" class="btn btn-danger text-light" data-mdb-dismiss="modal">Understood</button>
+        <button type="button" class="btn btn-danger text-light" routerLink="/login" data-mdb-dismiss="modal">Login</button>
       </div>
     </div>
   </div>

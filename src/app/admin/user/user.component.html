@@ -9,9 +9,8 @@
   </div>
   <table class="table table-hover align-middle mt-3 mb-0 bg-light shadow">
 
-
     <thead class="bg-primary text-light">
-    <tr>
+    <tr class="text-center align-items-center">
       <th>User</th>
       <th class="px-2">Phone number</th>
       <th class="px-2">Permissions</th>
@@ -23,16 +22,29 @@
       <th class="px-2">Permission manager</th>
     </tr>
     </thead>
+
     <tbody>
     <tr *ngFor="let user of users| filter:searchText; let i = index;">
       <td>
         <div class="d-flex align-items-center">
-          <img
+          <div *ngIf="user.images.length === 0">
+            <img
             src="https://mdbootstrap.com/img/new/avatars/8.jpg"
             alt=""
             style="width: 45px; height: 45px; margin-inline: 1em"
             class="rounded-circle"
           />
+          </div>
+
+          <div *ngIf="user.images.length !== 0">
+            <img
+              [src]="user.images[0].url"
+              [alt]="user.images[0].file.name"
+              style="width: 45px; height: 45px; margin-inline: 1em"
+              class="rounded-circle"
+            />
+          </div>
+
           <div class="ms-3">
             <p class="fw-bold mb-1">{{ user.name }} {{ user.surname }}</p>
             <p class="text-muted mb-0">{{ user.email }}</p>

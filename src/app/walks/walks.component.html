@@ -1,6 +1,26 @@
 <div class="container">
 
-  <button *ngIf="pageParam === 'walk'" class="btn btn-primary text-end mt-4" (click)="openAddWalksComponent()">Add Advertisement</button>
+  <div *ngIf="pageParam !== 'walk'" class="input-group rounded my-3 w-100 text-center">
+    <input id="searchBar" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+           aria-describedby="search-addon" autocomplete="off" [(ngModel)]="searchText"/>
+    <span class="input-group-text border-0" id="search-addon">
+          <i class="fas fa-search"></i>
+        </span>
+  </div>
+
+  <div class="d-flex justify-content-between px-5 my-4">
+
+    <h1 *ngIf="pageParam !== 'user'">Walks</h1>
+    <h1 *ngIf="pageParam === 'user'">Active walks</h1>
+
+    <button *ngIf="pageParam === 'walk' && matchRole(['ROLE_USER'])" class="btn btn-primary text-end h-75 py-3"
+            (click)="openAddWalksComponent()">Add Advertisement
+    </button>
+    <button *ngIf="pageParam === 'walk' && !matchRole(['ROLE_USER'])" class="btn btn-primary text-end h-75 py-3"
+            data-mdb-toggle="modal" data-mdb-target="#staticBackdrop">
+      Add Advertisement
+    </button>
+  </div>
   <h1 class="mt-3" *ngIf="pageParam === 'user'">Active walks</h1>
   <div *ngIf="walks.length == 0">
     <h2 *ngIf="pageParam === 'walk'">
@@ -14,9 +34,9 @@
   </div>
   <div *ngIf="walks.length > 0" class="row row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
 
-    <div class="col" *ngFor="let walk of walks; let i = index">
+    <div class="col" *ngFor="let walk of walks | filter:searchText; let i = index">
       <div class="card mt-4">
-        <ngb-carousel id="carousel-{{i}}" [interval]="config.interval" [wrap]="config.wrap"
+        <ngb-carousel id="carousel-{{ i }}" [interval]="config.interval" [wrap]="config.wrap"
                       [keyboard]="config.keyboard"
         >
           <ng-template ngFor let-slide [ngForOf]="connectedImagesToOneArray(walk.dogs)">
@@ -34,7 +54,7 @@
 
           <p class="card-text">
             {{ walk.description }} <br/>
-            Date: {{ walk.date | date: 'dd MMM yyyy' }} <br>
+            Date: {{ walk.date | date: 'dd MMM yyyy, hh:mm' }} <br>
           </p>
           <p class="card-text text-warning">
             Remuneration: {{ walk.price | number: '1.2-2' }}zł
@@ -42,21 +62,40 @@
         </div>
 
         <div *ngIf="pageParam === 'walk'" class="card-footer small text-center">
-          <button  type="button" class="btn btn-primary mb-2" (click)="confirmWalk(walk, i)">I'll take you for a walk.
+          <button *ngIf="matchRole(['ROLE_USER'])" type="button" class="btn btn-primary mb-2"
+                  (click)="confirmWalk(walk, i)">I'll take you for a walk.
+          </button>
+
+          <button *ngIf="!matchRole(['ROLE_USER'])" type="button" class="btn btn-primary mb-2"
+                  data-mdb-toggle="modal" data-mdb-target="#staticBackdrop">
+            I'll take you for a walk.
           </button>
         </div>
 
         <div *ngIf="pageParam === 'user'" class="card-footer small text-center pb-0">
           <p class="text-muted">
             You confirmed this walk {{ walk.confirmedAt | timeSince }} ago. <br>
-            Planned date for this walk is {{ walk.date | date: 'MMM dddd, yyyy hh:mm' }}
+            Planned date for this walk is {{ walk.date | date: 'MMM dd, yyyy hh:mm' }}
           </p>
         </div>
 
         <div class="card-footer small text-center pb-0">
-          <p class="text-muted">Added {{ walk.addedAt | timeSince }} ago</p>
+          <p class="text-muted">
+            Added {{ walk.addedAt | timeSince }} ago
+          </p>
+          <p *ngIf="matchRole(['ROLE_ADMIN', 'ROLE_OWNER'])">
+            Status: {{ walk.adState }}
+          </p>
+        </div>
+
+        <div id="admin-walk-buttons" *ngIf="pageParam === 'admin'"
+             class="card-footer small text-center d-flex justify-content-around">
+          <button type="button" class="btn btn-danger" (click)="deleteWalk(walk, i)">Delete</button>
+          <button type="button" class="btn btn-primary" (click)="editWalk(walk)">Edit</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<app-forbidden-side></app-forbidden-side>

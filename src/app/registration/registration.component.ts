@@ -3,6 +3,8 @@ import {UserService} from "../service/user.service";
 import {Address, Role, User} from "../model/User";
 import {Dog} from "../model/Dog";
 import {Router} from "@angular/router";
+import {DomSanitizer} from "@angular/platform-browser";
+import {ImageUtil} from "../utils/ImageUtil";
 
 @Component({
   selector: 'app-registration',
@@ -13,7 +15,9 @@ export class RegistrationComponent implements OnInit {
 
 
   @Input()
-  user : User
+  user : User = new User('', '', '', '', 0,
+  new Address('', '', '', '', '', ''),
+  new Array<Dog>(), new Array<Role>(), false, [])
   @Input()
   password : string = ''
   @Input()
@@ -24,10 +28,11 @@ export class RegistrationComponent implements OnInit {
   passwordContainNumber = false
   passwordHasProperLength = false
 
-  constructor(private userService : UserService, private router: Router) {
-    this.user = new User('', '', '', '', 0,
-    new Address('', '', '', '', '', ''),
-    new Array<Dog>(), new Array<Role>(), false)
+  constructor(
+    private userService : UserService,
+    private router: Router,
+    private sanitizer: DomSanitizer
+  ) {
   }
 
   ngOnInit(): void {
@@ -52,7 +57,18 @@ export class RegistrationComponent implements OnInit {
   }
 
   signUp() {
-    this.userService.addUser(this.user, this.password).subscribe()
-    this.router.navigate(['/'])
+    this.userService.addUser(this.user, this.password).subscribe({
+      complete: () => this.router.navigate(['meetings'], { queryParams:  { page: 'meeting' } })
+      }
+    )
+  }
+
+  onFileSelected($event: Event) {
+    const fileHandle = ImageUtil.onFileSelected($event, this.sanitizer)
+    this.user.images.push(fileHandle)
+  }
+
+  removeImage(i: number) {
+    this.user.images.splice(i, 1)
   }
 }

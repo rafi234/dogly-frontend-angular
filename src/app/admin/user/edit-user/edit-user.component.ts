@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {Address, User } from 'src/app/model/User';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {User} from 'src/app/model/User';
+import {UserService} from "../../../service/user.service";
+import {ImageUtil} from "../../../utils/ImageUtil";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-edit-user',
@@ -9,16 +12,42 @@ import {Address, User } from 'src/app/model/User';
 })
 export class EditUserComponent implements OnInit {
 
-  user? : User
+  user?: User
 
-  constructor(private activeModal: NgbActiveModal) { }
+  constructor(
+    private activeModal: NgbActiveModal,
+    private userService: UserService,
+    private sanitizer: DomSanitizer
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
-  passBack(action : string) {
-    const retVal = [this.user, action]
-    this.activeModal.close(retVal)
+  passBack(action: string) {
+    if (!this.user)
+      throw Error()
+    if (action === 'UPDATE') {
+      this.userService.updateUser(this.user).subscribe({
+        next: () =>this.close()
+      })
+    }
+    else if (action === 'DELETE') {
+      if (confirm('Are you sure you want to delete user with email: ' + this.user.email)) {
+        this.userService.deleteUser(this.user).subscribe({
+          next: () =>this.close()
+        })
+      }
+    }
+  }
+
+  onFileSelected($event: Event) {
+    const fileHandle = ImageUtil.onFileSelected($event, this.sanitizer)
+    this.user?.images.push(fileHandle)
+  }
+
+  removeImage(i: number) {
+    this.user?.images.splice(i, 1)
   }
 
   close() {

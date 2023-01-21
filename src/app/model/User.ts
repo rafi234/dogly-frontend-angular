@@ -1,4 +1,5 @@
 import {Dog} from "./Dog";
+import {FileHandle} from "./file-handle";
 
 export class User {
   id: string
@@ -10,10 +11,11 @@ export class User {
   dogs: Dog[]
   roles: Role[]
   active: boolean
+  images: FileHandle[]
 
   constructor(id: string, name: string, surname: string, email: string,
               phoneNumber: number, address: Address, dogs: Dog[],
-              roles: Role[], active: boolean
+              roles: Role[], active: boolean, images: FileHandle[]
   ) {
     this.id = id
     this.name = name
@@ -24,6 +26,7 @@ export class User {
     this.dogs = dogs
     this.roles = roles
     this.active = active
+    this.images = images
   }
 
   static fromHttp(data: User): User {
@@ -36,7 +39,8 @@ export class User {
     return new User(
       data.id, data.name, data.surname,
       data.email, data.phoneNumber,
-      newAddress, dogs, roles, data.active
+      newAddress, dogs, roles,
+      data.active, data.images
     )
   }
 }

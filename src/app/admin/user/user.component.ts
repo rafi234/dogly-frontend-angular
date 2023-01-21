@@ -7,6 +7,8 @@ import {DogsComponent} from './dogs/dogs.component';
 import {EditUserComponent} from './edit-user/edit-user.component';
 import {ManageRolesComponent} from "./manage-roles/manage-roles.component";
 import {MessageComponent} from "../../message/message.component";
+import {map} from "rxjs";
+import {ImageProcessingService} from "../../service/image-processing.service";
 
 @Component({
   selector: 'app-user',
@@ -27,7 +29,8 @@ export class UserComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private imageProcessingService: ImageProcessingService
   ) {
   }
 
@@ -36,10 +39,18 @@ export class UserComponent implements OnInit {
   }
 
   refreshUsers() {
-    this.userService.getUsers().subscribe(next => {
+    this.userService.getUsers()
+      .pipe(
+        map(
+          (x: User[]) => x.map((user: User) => {
+            user.images = this.imageProcessingService.createImages(user.images)
+            return user
+          })
+        )
+      )
+      .subscribe(next => {
         this.users = next
         this.clicked = new Array<boolean>(this.users.length)
-        console.log(this.clicked)
       }
     );
   }
@@ -57,22 +68,8 @@ export class UserComponent implements OnInit {
   }
 
   openModalEditUser(user: User) {
-    console.log(this.users)
     const modalRef = this.modalService.open(EditUserComponent)
     modalRef.componentInstance.user = user
-    modalRef.result.then(result => {
-        if (result) {
-          const action = result[1]
-          if (action === 'UPDATE')
-            this.userService.updateUser(result[0]).subscribe()
-          else if (action === 'DELETE') {
-            if (confirm('Are you sure you want to delete user with email: ' + user.email)) {
-              this.userService.deleteUser(result[0]).subscribe()
-            }
-          }
-        }
-      }
-    )
   }
 
   openChangedPasswordSuccessfullyModal() {
